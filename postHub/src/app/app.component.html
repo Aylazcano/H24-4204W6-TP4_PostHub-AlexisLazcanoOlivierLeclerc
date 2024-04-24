@@ -1,0 +1,47 @@
+<div id="container">
+  <header>
+
+    <!-- Ruban principal -->
+    <div id="headerRibbon">
+
+      <div id="title">Post <span>hub</span></div>
+
+      <input type="text" name="mainSearch" placeholder="Rechercher dans Post hub ..." [(ngModel)]="searchText">
+
+      <button [routerLink]="['/postList/search/', searchText]"><fa-icon [icon]="faMagnifyingGlass"></fa-icon></button>
+
+      <button class="register" [routerLink]="['/register']"><fa-icon [icon]="faStar"></fa-icon> Inscription</button>
+
+      <button class="log" [routerLink]="['/login']"><fa-icon [icon]="faRightToBracket"></fa-icon></button>
+
+      <button class="log" (click)="logout()"><fa-icon [icon]="faRightFromBracket"></fa-icon></button>
+
+    </div>
+
+    <!-- Ruban de navigation  -->
+    <nav>
+
+      <div [routerLink]="['/postList', 'index']">Accueil</div>
+
+      <div [routerLink]="['/postList', 'discover']">Découvrir</div>
+
+      <div id="hubs" (click)="toggleHubs()">Vos hubs <fa-icon [icon]="faChevronDown"></fa-icon>
+        <div *ngIf="hubsToggled">
+          <div *ngFor="let h of hubList" [routerLink]="['/postList/hub', h.id]">✦ {{h.name}}</div>
+          <div [routerLink]="['/newHub']">Créer un hub</div>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="rightOption" [routerLink]="['/profile']">Profil</div>
+
+    </nav>
+
+  </header>
+  <main>
+    
+    <router-outlet></router-outlet>
+
+  </main>
+</div>

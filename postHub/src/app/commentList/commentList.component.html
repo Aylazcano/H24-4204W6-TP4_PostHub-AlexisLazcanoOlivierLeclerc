@@ -1,0 +1,7 @@
+<div class="title">Commentaires signalés</div>
+
+<div class="report" *ngFor="let c of commentList">
+  <!-- Notez que le bouton qui flotte en haut à droite de chaque commentaire est ici, et non dans le composant comment -->
+  <div class="delete" (click)="deleteComment(c)"><button>Supprimer</button></div>
+  <app-comment [comment]="c"></app-comment>
+</div>

@@ -1,0 +1,58 @@
+.category{
+    margin-bottom:20px;
+}
+
+#postTitleBox, #postContentBox, .postFooter input{
+    margin-bottom:10px;
+    display:block;
+    width:100%;
+    background-color:#3a3a4b;
+    border:none;
+    color:#d8daf1;
+    padding:10px;
+    border-radius:20px;
+    display:flex;
+    align-items:end;
+    flex-wrap:wrap;
+}
+
+#postTitleBox>div{
+    font-weight:bold;
+    padding-right:10px;
+}
+
+#postTitleBox input{
+    width:100%;
+    background:none;
+    color:inherit;
+    border:none;
+    flex:1;
+}
+
+#postTitleBox input:focus{
+    outline:none;
+}
+
+#postContentBox>div{
+    width:100%;
+    font-weight:bold;
+}
+
+#postContentBox>textarea{
+    background:none;
+    width:100%;
+    border:none;
+    color:inherit;
+    outline:none;
+    resize:vertical;
+}
+
+.postFooter button{
+    background-color:#25dc53;
+    font-weight:bold;
+    border:none;
+    border-radius:15px;
+    padding:5px 15px;
+    color:white;
+    cursor:pointer;
+}

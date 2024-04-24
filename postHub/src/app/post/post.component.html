@@ -1,0 +1,37 @@
+
+<!-- Affichage du commentaire principal d'un post -->
+<div class="post" *ngIf="post != null" [routerLink]="['/post', post.id]">
+
+  <!-- Auteur, date, hub -->
+  <div class="postHeader">
+    <div>{{post.mainComment!.username}}</div>
+    <div class="postDate">• {{post.mainComment!.date | date:"dd MMMM yyyy hh:mm:ss":"":"fr"}}</div>
+    <div [routerLink]="['/postList/hub', post.hubId]">({{'dans ✦ ' + post.hubName}})</div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- Titre du post -->
+  <div class="postTitle">
+    {{post.title}}
+  </div>
+
+  <!-- Texte du commentaire principal du post -->
+  <div class="postContent">
+    <div>
+    {{post.mainComment!.text}}
+    </div>
+    <!-- Des images pourraient être affichées ici (pas strictement obligatoire...) -->
+  </div>
+
+  <!-- Votes du post. Ils ne peuvent pas être modifiés ici, seulement dans le composant fullPost une fois ce post cliqué -->
+  <div class="postFooter">
+    <div class="score">
+      <button><fa-icon [icon]="faUpLong"></fa-icon></button>
+      <div>{{post.mainComment!.upvotes - post.mainComment!.downvotes}}</div>
+      <button><fa-icon [icon]="faDownLong"></fa-icon></button>
+    </div>
+  </div>
+  
+</div>
+
+<hr>

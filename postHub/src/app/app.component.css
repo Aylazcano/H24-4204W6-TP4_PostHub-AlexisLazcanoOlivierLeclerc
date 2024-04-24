@@ -1,0 +1,154 @@
+#container{
+    width:1000px;
+    max-width:100%;
+    background-color:#272735;
+    color:#fffbf7;
+    margin:auto;
+    font-family:Arial;
+    border-radius:10px;
+}
+
+/*
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+               header
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+*/
+header{
+    background-color:#3a3a4b;
+    padding:0px 60px;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+}
+
+#headerRibbon{
+    display:flex;
+    padding:10px 0px;
+}
+
+#title{
+    font-weight:bold;
+    font-size:2em;
+    margin-right:25px;
+    cursor:pointer;
+}
+
+#title span{
+    background-color:#45ff73;
+    color:#272735;
+    display:inline-block;
+    border-radius:3px;
+    padding:0px 2px;
+}
+
+#headerRibbon input{
+    background-color:#4a4a5d;
+    color:#9da5b6;
+    border:none;
+    border-radius:5px;
+    margin-right:10px;
+    padding:0px 8px;
+    flex:1;
+}
+
+#headerRibbon input:focus{
+    outline:none;
+    color:#d2d8e5;
+}
+
+#headerRibbon button{
+    background-color:#25dc53;
+    color:white;
+    padding:0px 12px;
+    border:none;
+    border-radius:5px;
+    margin-right:15px;
+    cursor:pointer;
+}
+
+#headerRubbon button:last-child{
+    margin-right:0px;
+}
+
+#headerRibbon .register{
+    background-color:#4a4a5d;
+    border:white 1px solid;
+    border-radius:4px;
+    font-weight:bold;
+}
+
+#headerRibbon .register:hover{
+    background-color:white;
+    color:#4a4a5d;
+}
+
+#headerRibbon .log{
+    font-size:1.2em;
+    background:none;
+    margin-right:0px;
+    color:#45ff73;
+}
+
+#headerRibbon .log:hover{
+    color:white;
+}
+
+nav{
+    margin-top:10px;
+    display:flex;
+    gap:0px 20px;
+    font-size:0.9em;
+    font-weight:bold;
+}
+
+nav>div{
+    padding-bottom:8px;
+    border-bottom:rgba(255,255,255,0) 2px solid;
+}
+
+nav div:not(.spacer){
+    cursor:pointer;
+}
+
+nav .rightOption{
+    opacity:0.7;
+}
+
+nav fa-icon{
+    font-size:0.8em;
+}
+
+#hubs{
+    position:relative;
+}
+
+#hubs>div{
+    position:absolute;
+    z-index:2;
+    background-color:#4c4c61;
+    transform: translate(0px, 12px);
+    color:white;
+    padding:5px;
+    border-radius:10px;
+    min-width:max-content;
+    max-width:200px;
+}
+
+#hubs>div>div{
+    padding:5px;
+    border-radius:5px;
+}
+
+#hubs>div>div:hover{
+    background-color:#5b5b74;
+}
+
+/*
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+                main
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+*/
+
+main{
+    padding:30px 60px;
+}
+

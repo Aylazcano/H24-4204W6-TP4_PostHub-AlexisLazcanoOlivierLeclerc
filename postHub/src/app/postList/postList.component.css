@@ -1,0 +1,49 @@
+#postListTitle{
+    font-weight:bold;
+    margin-bottom:20px;
+    font-size:1.5em;
+}
+
+#listHeader{
+    display:flex;
+    justify-content:space-between;
+    gap:0px 5px;
+}
+
+#listHeader button{
+    background-color:#25dc53;
+    font-weight:bold;
+    border:none;
+    border-radius:15px;
+    padding:0px 15px;
+    color:white;
+    cursor:pointer;
+}
+
+#listHeader button:nth-child(2){
+    background-color:#4c4c61;
+}
+
+#listHeader button:hover{
+    background-color:#45ff73;
+    color:black;
+}
+
+#listHeader button:nth-child(2):hover{
+    background-color:#61617a;
+    color:white;
+}
+
+
+#postSort{
+    border-radius:10px;
+    padding:5px 10px;
+    background:none;
+    border:none;
+    color:#fffbf7;
+    cursor:pointer;
+}
+
+#postSort:hover{
+    background-color:#51516c;
+}

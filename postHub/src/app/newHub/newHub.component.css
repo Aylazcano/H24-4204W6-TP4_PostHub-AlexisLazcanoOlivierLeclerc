@@ -1,0 +1,52 @@
+#inputTitle{
+    font-weight:bold;
+    margin-bottom:20px;
+    font-size:1.5em;
+}
+
+.inputData{
+    width:400px;
+    margin-bottom:20px;
+}
+
+.inputData>div:first-child{
+    margin-bottom:5px;
+    font-weight:bold;
+    font-size:1.1em;
+    padding-left:5px;
+}
+
+.inputData>input{
+    display:block;
+    width:100%;
+    background-color:#4a4a5d;
+    color:#d2d8e5;
+    border:none;
+    padding:10px;
+    border-radius:15px;
+}
+
+.inputData>input:focus{
+    outline:none;
+}
+
+.inputData>*:not(:last-child){
+    margin-bottom:5px;
+}
+
+.inputData button{
+    margin-top:5px;
+    margin-left:5px;
+    background-color:#25dc53;
+    font-weight:bold;
+    border:none;
+    border-radius:15px;
+    padding:5px 15px;
+    color:white;
+    cursor:pointer;
+}
+
+.inputData button:hover{
+    background-color:#45ff73;
+    color:black;
+}

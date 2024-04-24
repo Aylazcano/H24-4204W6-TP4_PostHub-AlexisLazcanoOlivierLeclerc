@@ -1,0 +1,80 @@
+
+<!-- Affichage du commentaire (oui c'est gros et laid) -->
+<div class="post" *ngIf="comment != null">
+
+  <!-- Auteur et date -->
+  <div class="postHeader">
+    <div>{{comment.username == null ? '???' : comment.username}}</div>
+    <div class="postDate">• {{comment.date | date:"dd MMMM yyyy hh:mm:ss":"":"fr"}}</div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- Texte du commentaire et éventuellement images -->
+  <div class="postContent">
+    <div style="flex:1; display:flex; align-items:center;">
+      <img class="avatar" src="/assets/images/default.png" alt="Avatar">
+      <div *ngIf="!editToggle">{{comment.text}}</div>
+      <textarea *ngIf="editToggle" id="commentTextEdit" name="commentTextEdit" rows="3"
+        [(ngModel)]="editedText">{{comment.text}}</textarea>
+    </div>
+    <div class="commentPictures">
+      <!-- Des images pourraient être affichées ici... -->
+    </div>
+  </div>
+
+  <!-- Nombreux boutons pour modifier le commentaire (votes, signalement, modification, etc.) -->
+  <div class="postFooter">
+    <div class="score" *ngIf="comment.username != null">
+      <button [class]="comment.upvoted ? 'upvoted' : ''" (click)="upvote()"><fa-icon
+          [icon]="faUpLong"></fa-icon></button>
+      <div>{{comment.upvotes - comment.downvotes}}</div>
+      <button [class]="comment.downvoted ? 'downvoted' : ''" (click)="downvote()"><fa-icon
+          [icon]="faDownLong"></fa-icon></button>
+    </div>
+    <div>
+      <button (click)="repliesToggle = !repliesToggle"><fa-icon [icon]="faMessage"></fa-icon>
+        {{comment.subCommentTotal}}</button>
+    </div>
+    <div class="editMenu" (click)="editMenu = !editMenu" *ngIf="comment.username != null">
+      <button><fa-icon [icon]="faEllipsis"></fa-icon></button>
+      <div *ngIf="editMenu">
+        <div *ngIf="isAuthor" (click)="this.editToggle = !this.editToggle">Modifier</div>
+        <div *ngIf="isAuthor" (click)="deleteComment()">Supprimer</div>
+        <div *ngIf="!isAuthor">Signaler</div>
+      </div>
+    </div>
+    <div>
+      <button *ngIf="comment.username != null" (click)="replyToggle = !replyToggle">Répondre</button>
+    </div>
+    <div>
+      <!-- Il faudra modifier cet input -->
+      <input *ngIf="editToggle" type="file" accept="images/*" name="editedCommentPictures">
+    </div>
+    <div>
+      <button *ngIf="editToggle" (click)="editToggle = false">Annuler</button>
+    </div>
+    <div>
+      <button *ngIf="editToggle" (click)="editComment()">Modifier</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Boîte pour répondre au commentaire affiché dans ce composant -->
+<div *ngIf="replyToggle" id="commentBox">
+  <input type="text" name="newComment" id="newComment" placeholder="Ajouter un commentaire" [(ngModel)]="newComment">
+  <div *ngIf="displayInputFile" class="commentPictureAdd">
+    <!-- Il faudra modifier cet input -->
+    <input type="file" accept="images/*" name="commentPictures">
+  </div>
+  <button (click)="displayInputFile = !displayInputFile"><fa-icon [icon]="faImage"></fa-icon></button>
+  <button (click)="createComment()">Ajouter</button>
+</div>
+
+<!-- Liste de sous-commentaires -->
+<div id="subComments" *ngIf="repliesToggle">
+  <div class="comment" *ngFor="let c of comment!.subComments">
+    <!-- Ne cherchez pas le composant app-comment, vous êtes déjà dedans ! -->
+    <app-comment [comment]="c"></app-comment>
+  </div>
+</div>

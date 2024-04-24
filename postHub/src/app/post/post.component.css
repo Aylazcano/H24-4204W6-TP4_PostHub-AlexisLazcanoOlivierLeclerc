@@ -1,0 +1,76 @@
+.postHeader, .postFooter{
+    display:flex;
+    gap:3px 10px;
+    font-size:0.8em;
+    align-items:center;
+}
+
+.postDate{
+    opacity:0.7;
+}
+
+.postHeader button{
+    background:none;
+    color:#fffbf7;
+    border:none;
+    padding:5px 8px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.postHeader button:hover{
+    background-color:#262632;
+}
+
+.post{
+    padding:3px 10px;
+    border-radius:15px;
+    cursor:pointer;
+}
+
+.post:hover{
+    background-color:#3a3a4b;
+}
+
+.postTitle{
+    font-size:1.1em;
+    font-weight:bold;
+}
+
+.postContent{
+    margin:10px 0px;
+    color:#d8daf1;
+}
+
+.postFooter>div{
+    display:flex;
+    align-items: center;
+    border-radius:25px;
+    gap:0px;
+    padding:0px;
+    background-color:#1b1b26;
+    font-weight:bolder;
+    cursor:default;
+}
+
+.postFooter>div button{
+    background:none;
+    border:none;
+    color:white;
+    padding:6px 12px;
+    cursor:pointer;
+    border-radius:15px;
+}
+
+.commentPictures{
+    margin:5px 0px;
+}
+
+.commentPictures img{
+    height : 100px;
+}
+
+.pictureFrame{
+    position:relative;
+    display:inline-block;
+}

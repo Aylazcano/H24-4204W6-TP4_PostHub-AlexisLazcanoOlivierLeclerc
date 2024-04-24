@@ -1,0 +1,16 @@
+<div *ngIf="!userIsConnected">
+  Connectez-vous pour accéder à votre profil.
+</div>
+
+<div *ngIf="userIsConnected">
+  <div id="profileTitle">Votre profil</div>
+
+  <!-- Le formulaire pour changer le mot de passe vous est déjà fourni -->
+  <div class="profile">
+    <div>Modifier le mot de passe</div>
+    <input type="password" name="oldPassword" id="oldPassword" placeholder="Mot de passe actuel" [(ngModel)]="oldPassword">
+    <input type="password" name="newPassword" id="newPassword" placeholder="Nouveau mot de passe" [(ngModel)]="newPassword">
+    <input type="password" name="newPasswordConfirm" id="newPasswordConfirm" placeholder="Confirmer le nouveau mot de passe" [(ngModel)]="newPasswordConfirm">
+    <button>Modifier</button>
+  </div>
+</div>

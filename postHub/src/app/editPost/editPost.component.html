@@ -1,0 +1,27 @@
+<div *ngIf="hub == null">Le hub choisi est invalide.</div>
+
+<div *ngIf="hub != null">
+    <div class="category">Post dans <span class="orange">✦ {{hub.name}}</span></div>
+
+    <div class="post">
+    
+        <div id="postTitleBox">
+            <div>Titre</div>
+            <input type="text" id="postTitle" name="postTitle" placeholder="Choisissez un titre éloquent" [(ngModel)]="postTitle">
+        </div>
+    
+        <div id="postContentBox">
+            <div>
+                Texte
+            </div>
+            <textarea rows="6" id="postContent" name="postContent" placeholder="Texte du post ..." [(ngModel)]="postText"></textarea>
+        </div>
+        
+        <div class="postFooter">
+            <!-- Ajouter un input de type file ici ne serait pas bête du tout -->
+            <button (click)="createPost()">Envoyer</button>
+        </div>
+        
+      </div>
+    
+</div>

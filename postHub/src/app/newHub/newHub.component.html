@@ -1,0 +1,13 @@
+<div *ngIf="!userIsConnected">
+  Connectez-vous pour créer un nouveau hub.
+</div>
+
+<div *ngIf="userIsConnected">
+  <div id="inputTitle">Créer un nouveau hub</div>
+
+  <div class="inputData">
+    <div>Choisissez un nom représentatif</div>
+    <input type="text" name="hubName" id="hubName" placeholder="Nom du nouveau hub" [(ngModel)]="hubName">
+    <button (click)="createHub()">Créer le hub</button>
+  </div>
+</div>

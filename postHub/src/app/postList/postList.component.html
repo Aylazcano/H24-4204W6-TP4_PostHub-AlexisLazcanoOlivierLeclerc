@@ -1,0 +1,25 @@
+
+<!-- Le nom du hub est juste affiché si on a choisi un hub précis (donc pas si on a cliqué sur les onglets Accueil ou Découvrir) -->
+<div id="postListTitle" *ngIf="hub != null">✦ {{hub.name}}</div>
+
+
+<div id="listHeader">
+  
+  <!-- On peut juste créer un post et joindre/quitter un hub si on a choisit un hub précis au lieu des onglets Accueil ou Découvrir -->
+  <button *ngIf="hub != null" [routerLink]="['/editPost', hub.id]">Nouveau post</button>
+  <button *ngIf="hub != null" (click)="toggleHubJoin()">{{(hub.isJoined ? 'Quitter' : 'Joindre') + ' ✦ ' + hub.name}}</button>
+
+  <div class="spacer"></div>
+
+  <!-- Trier par nouveauté ou popularité -->
+  <div>
+    <select name="postSort" id="postSort" [(ngModel)]="sorting" (change)="toggleSorting()">
+      <option value="popular">Populaire</option>
+      <option value="new">Nouveau</option>
+    </select>
+  </div>
+</div>
+<hr>
+
+<!-- Affichage de plusieurs posts -->
+<app-post *ngFor="let p of posts" [post]="p"></app-post>
