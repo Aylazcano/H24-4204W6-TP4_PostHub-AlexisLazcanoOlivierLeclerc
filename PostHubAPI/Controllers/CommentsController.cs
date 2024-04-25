@@ -65,7 +65,7 @@ namespace PostHubAPI.Controllers
                     image.Mutate(i => i.Resize(new ResizeOptions()
                     {
                         Mode = ResizeMode.Min,
-                        Size = new Size() { Width = 320 }
+                        Size = new Size() { Width = 400 }
                     }));
                     image.Save(Directory.GetCurrentDirectory() + "/images/post/" + newFileName);
 
