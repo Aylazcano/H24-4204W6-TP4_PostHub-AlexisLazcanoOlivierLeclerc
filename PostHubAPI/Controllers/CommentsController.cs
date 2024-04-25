@@ -110,6 +110,18 @@ namespace PostHubAPI.Controllers
             return Ok(new CommentDisplayDTO(newComment, false, user));
         }
 
+        [HttpGet("{pictureId}")]
+        [AllowAnonymous]
+        public async Task<ActionResult> GetCommentPicture(int pictureId)
+        {
+            Picture? picture = await _pictureService.GetPicture(pictureId);
+            if(picture == null || picture.FileName == null || picture.MimeType == null) return NotFound();
+
+            byte[] bytes = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/post/" + picture.FileName);
+
+            return File(bytes, picture.MimeType);
+        }
+
         [HttpGet("{tabName}/{sorting}")]
         public async Task<ActionResult<IEnumerable<PostDisplayDTO>>> GetPosts(string tabName, string sorting)
         {

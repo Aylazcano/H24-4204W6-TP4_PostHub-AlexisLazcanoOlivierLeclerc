@@ -1,4 +1,5 @@
-﻿using PostHubAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PostHubAPI.Data;
 using PostHubAPI.Models;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
@@ -31,6 +32,12 @@ namespace PostHubAPI.Services
             await _context.SaveChangesAsync();
 
             return newPicture;
+        }
+
+        public async Task<Picture?> GetPicture(int id)
+        {
+            if (IsContextNull()) return null;
+            return await _context.Pictures.FindAsync(id);
         }
     }
 }
