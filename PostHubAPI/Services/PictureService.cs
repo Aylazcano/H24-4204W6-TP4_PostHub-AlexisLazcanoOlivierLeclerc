@@ -16,5 +16,21 @@ namespace PostHubAPI.Services
         }
 
         private bool IsContextNull() => _context.Pictures == null;
+
+        public async Task<Picture?> CreatePicture(string fileName, string mimeType)
+        {
+            if (IsContextNull()) return null;
+            Picture newPicture = new Picture() 
+            {
+                Id = 0,
+                FileName = fileName,
+                MimeType = mimeType
+            };
+
+            _context.Pictures.Add(newPicture);
+            await _context.SaveChangesAsync();
+
+            return newPicture;
+        }
     }
 }

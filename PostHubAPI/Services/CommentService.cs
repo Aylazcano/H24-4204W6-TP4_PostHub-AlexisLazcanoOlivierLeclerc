@@ -21,7 +21,7 @@ namespace PostHubAPI.Services
             return await _context.Comments.FindAsync(id);
         }
 
-        public async Task<Comment?> CreateComment(User user, string text, Comment? parentComment)
+        public async Task<Comment?> CreateComment(User user, string text, Comment? parentComment, List<Picture> list)
         {
             if (IsContextNull()) return null;
 
@@ -32,6 +32,7 @@ namespace PostHubAPI.Services
                 Date = DateTime.UtcNow,
                 User = user, // Auteur
                 ParentComment = parentComment, // null si commentaire principal du post
+                Pictures = list,
             };
 
             _context.Comments.Add(newComment);

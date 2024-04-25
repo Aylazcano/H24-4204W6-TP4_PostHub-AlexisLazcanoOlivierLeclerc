@@ -255,6 +255,9 @@ namespace PostHubAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -264,6 +267,8 @@ namespace PostHubAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
 
                     b.ToTable("Pictures");
                 });
@@ -478,6 +483,15 @@ namespace PostHubAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("PostHubAPI.Models.Picture", b =>
+                {
+                    b.HasOne("PostHubAPI.Models.Comment", "Comment")
+                        .WithMany("Pictures")
+                        .HasForeignKey("CommentId");
+
+                    b.Navigation("Comment");
+                });
+
             modelBuilder.Entity("PostHubAPI.Models.Post", b =>
                 {
                     b.HasOne("PostHubAPI.Models.Hub", "Hub")
@@ -498,6 +512,8 @@ namespace PostHubAPI.Migrations
             modelBuilder.Entity("PostHubAPI.Models.Comment", b =>
                 {
                     b.Navigation("MainCommentOf");
+
+                    b.Navigation("Pictures");
 
                     b.Navigation("SubComments");
                 });

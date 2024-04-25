@@ -16,6 +16,7 @@ using PostHubAPI.Models;
 using PostHubAPI.Models.DTOs;
 using PostHubAPI.Services;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace PostHubAPI.Controllers
 {
@@ -40,7 +41,7 @@ namespace PostHubAPI.Controllers
 
         [HttpPost("{hubId}")]
         [Authorize]
-        public async Task<ActionResult<PostDisplayDTO>> PostPost(int hubId, PostDTO postDTO)
+        public async Task<ActionResult<PostDisplayDTO>> PostPost(int hubId)
         {
             User? user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (user == null) return Unauthorized();
@@ -48,10 +49,40 @@ namespace PostHubAPI.Controllers
             Hub? hub = await _hubService.GetHub(hubId);
             if (hub == null) return NotFound();
 
-            Comment? mainComment = await _commentService.CreateComment(user, postDTO.Text, null);
-            if(mainComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
+            string? postTitle = Request.Form["PostTitle"];
+            string? postText = Request.Form["PostText"];
+            List<Picture> list = new List<Picture>();
+            try
+            {
+                IFormCollection formCollection = await Request.ReadFormAsync();
+                IEnumerable<IFormFile>? files = formCollection.Files.GetFiles("ImageUpload");
+                foreach (IFormFile file in files)
+                {
+                    Image image = Image.Load(file.OpenReadStream());
+                    string newFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string newMimeType = file.ContentType;
+                    Picture newPic = await _pictureService.CreatePicture(newFileName, newMimeType);
+                    image.Mutate(i => i.Resize(new ResizeOptions()
+                    {
+                        Mode = ResizeMode.Min,
+                        Size = new Size() { Width = 320 }
+                    }));
+                    image.Save(Directory.GetCurrentDirectory() + "/images/post/" + newFileName);
 
-            Post? post = await _postService.CreatePost(postDTO.Title, hub, mainComment);
+                    if (newPic != null)
+                    {
+                        list.Add(newPic);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            Comment? mainComment = await _commentService.CreateComment(user, postText, null, list);
+            if(mainComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
+            
+            Post? post = await _postService.CreatePost(postTitle, hub, mainComment);
             if(post == null) return StatusCode(StatusCodes.Status500InternalServerError);
 
             bool voteToggleSuccess = await _commentService.UpvoteComment(mainComment.Id, user);
@@ -70,7 +101,7 @@ namespace PostHubAPI.Controllers
             Comment? parentComment = await _commentService.GetComment(parentCommentId);
             if (parentComment == null || parentComment.User == null) return BadRequest();
 
-            Comment? newComment = await _commentService.CreateComment(user, commentDTO.Text, parentComment);
+            Comment? newComment = await _commentService.CreateComment(user, commentDTO.Text, parentComment, new List<Picture>());
             if(newComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
 
             bool voteToggleSuccess = await _commentService.UpvoteComment(newComment.Id, user);
