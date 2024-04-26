@@ -41,6 +41,7 @@ export class FullPostComponent implements OnInit {
     if (postId != null) {
       this.post = await this.postService.getPost(+postId, this.sorting);
       this.newMainCommentText = this.post.mainComment == null ? "" : this.post.mainComment.text;
+      this.picIdList = this.post.mainComment?.pictureIds;
     }
 
 

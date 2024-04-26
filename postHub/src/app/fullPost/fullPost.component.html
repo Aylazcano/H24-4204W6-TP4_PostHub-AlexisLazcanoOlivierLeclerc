@@ -28,12 +28,10 @@
   <!-- Texte (et éventuellement images) du commentaire principal du post -->
   <div class="postContent">
     <div *ngIf="!toggleMainCommentEdit">{{post.mainComment!.text}}</div>
-    <textarea id="commentTextEdit" *ngIf="toggleMainCommentEdit" type="text"
-      [(ngModel)]="newMainCommentText"></textarea>
+    <textarea id="commentTextEdit" *ngIf="toggleMainCommentEdit" type="text" [(ngModel)]="newMainCommentText"></textarea>
     <div class="commentPictures">
       <!-- Des images pourraient être affichées ici -->
-      <img *ngFor="let picId of picIdList" alt="picId"
-        [src]="'https://localhost:7007/api/Comments/GetFile/sm/' + picId">
+      <img *ngFor="let picId of picIdList" alt="picId" [src]="'https://localhost:7007/api/Comments/GetCommentPicture/sm/' + picId">
     </div>
   </div>
 

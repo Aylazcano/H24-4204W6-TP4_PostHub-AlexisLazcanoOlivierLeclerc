@@ -1,4 +1,4 @@
-﻿namespace PostHubAPI.Models.DTOs
+namespace PostHubAPI.Models.DTOs
 {
     public class CommentDisplayDTO
     {

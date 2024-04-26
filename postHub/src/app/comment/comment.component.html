@@ -19,7 +19,7 @@
     <div class="commentPictures">
       <!-- Des images pourraient être affichées ici -->
       <img *ngFor="let picId of picIdList" alt="picId"
-        [src]="'https://localhost:7007/api/Comments/GetFile/sm/' + picId">
+        [src]="'https://localhost:7007/api/Comments/GetCommentPicture/sm/' + picId">
     </div>
   </div>
 

@@ -1,4 +1,4 @@
-﻿namespace PostHubAPI.Models
+namespace PostHubAPI.Models
 {
     public class Picture
     {
