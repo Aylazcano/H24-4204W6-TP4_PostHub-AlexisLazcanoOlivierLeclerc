@@ -79,11 +79,21 @@ export class CommentComponent implements OnInit {
 
     if (this.comment == null || this.editedText == undefined) return;
 
-    let commentDTO = {
-      text: this.editedText
+    if (this.comment.subComments == null) this.comment.subComments = [];
+
+    let formData = new FormData();
+    formData.append("text", this.newComment)
+
+    if (this.picInput != undefined) {
+      let files = this.picInput.nativeElement.files;
+      if (files != null) {
+        for (let file of files) {
+          formData.append("pics", file, file.fileName)
+        }
+      }
     }
 
-    let newMainComment = await this.postService.editComment(commentDTO, this.comment.id);
+    let newMainComment = await this.postService.editComment(formData, this.comment.id);
     this.comment = newMainComment;
     this.editedText = this.comment.text;
     this.editMenu = false;

@@ -16,9 +16,10 @@
       <textarea *ngIf="editToggle" id="commentTextEdit" name="commentTextEdit" rows="3"
         [(ngModel)]="editedText">{{comment.text}}</textarea>
     </div>
-    <div class="commentPictures" *ngFor="let picId of picIdList">
+    <div class="commentPictures">
       <!-- Des images pourraient être affichées ici -->
-      <img alt="picId" [src]="'https://localhost:7007/api/Comments/GetFile/sm/' + picId">
+      <img *ngFor="let picId of picIdList" alt="picId"
+        [src]="'https://localhost:7007/api/Comments/GetFile/sm/' + picId">
     </div>
   </div>
 

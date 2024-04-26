@@ -29,7 +29,7 @@
             Downvoted = user != null && (comment.Downvoters?.Contains(user) ?? false);
             SubCommentTotal = comment.GetSubCommentTotal();
             SubComments = subComments;
-            PictureIds = comment.Pictures.Select(x => x.Id).ToList();
+            PictureIds = comment.Pictures?.Select(x => x.Id).ToList();
         }
     }
 }

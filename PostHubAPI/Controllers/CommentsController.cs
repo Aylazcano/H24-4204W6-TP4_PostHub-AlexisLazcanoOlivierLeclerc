@@ -48,7 +48,7 @@ namespace PostHubAPI.Controllers
             Hub? hub = await _hubService.GetHub(hubId);
             if (hub == null) return NotFound();
 
-            // TEMPORAIRE: Paramettre List<Picture> = null
+            // TODO : TEMPORAIRE Paramettre List<Picture> = null
             Comment? mainComment = await _commentService.CreateComment(user, postDTO.Text, null, null); 
             if (mainComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
 
@@ -188,7 +188,7 @@ namespace PostHubAPI.Controllers
 
         [HttpPut("{commentId}")]
         [Authorize]
-        public async Task<ActionResult<CommentDisplayDTO>> PutComment(int commentId, CommentDTO commentDTO)
+        public async Task<ActionResult<CommentDisplayDTO>> PutComment(int commentId)
         {
             User? user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
@@ -197,8 +197,23 @@ namespace PostHubAPI.Controllers
 
             if (user == null || comment.User != user) return Unauthorized();
 
-            // TEMPORAIRE: Paramettre List<Picture> = null
-            Comment? editedComment = await _commentService.EditComment(comment, commentDTO.Text, null); 
+            string? text = Request.Form["text"];
+
+
+            IFormCollection formCollection = await Request.ReadFormAsync();
+            IEnumerable<IFormFile>? files = formCollection.Files.GetFiles("pics");
+            List<Picture> picList = new List<Picture>();
+            if (files != null)
+            {
+                foreach (IFormFile file in files)
+                {
+                    Picture? newPicture = await _pictureService.CreatePicture(file);
+                    if (newPicture == null) return StatusCode(StatusCodes.Status500InternalServerError);
+                    picList.Add(newPicture);
+                }
+            }
+
+            Comment? editedComment = await _commentService.EditComment(comment, text, picList); 
             if (editedComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
 
             return Ok(new CommentDisplayDTO(editedComment, true, user));
