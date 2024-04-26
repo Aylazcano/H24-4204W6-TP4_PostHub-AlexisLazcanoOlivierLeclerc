@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PostHubAPI.Data;
 using PostHubAPI.Models;
 using SixLabors.ImageSharp;
@@ -11,27 +11,39 @@ namespace PostHubAPI.Services
     {
         private readonly PostHubAPIContext _context;
 
-        public PictureService(PostHubAPIContext context) 
+        public PictureService(PostHubAPIContext context)
         {
             _context = context;
         }
 
         private bool IsContextNull() => _context.Pictures == null;
 
-        public async Task<Picture?> CreatePicture(string fileName, string mimeType)
+        public async Task<Picture?> CreatePicture(IFormFile file)
         {
-            if (IsContextNull()) return null;
-            Picture newPicture = new Picture() 
+            try
             {
-                Id = 0,
-                FileName = fileName,
-                MimeType = mimeType
-            };
+                Image image = Image.Load(file.OpenReadStream());
 
-            _context.Pictures.Add(newPicture);
-            await _context.SaveChangesAsync();
+                Picture picture = new Picture()
+                {
+                    Id = 0,
+                    FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName),
+                    MimeType = file.ContentType
+                };
 
-            return newPicture;
+                image.Save(Directory.GetCurrentDirectory() + "/images/lg/" + picture.FileName);
+                image.Mutate(i => i.Resize(new ResizeOptions()
+                {
+                    Mode = ResizeMode.Min,
+                    Size = new Size() { Width = 320 }
+                }));
+                image.Save(Directory.GetCurrentDirectory() + "/images/sm/" + picture.FileName);
+
+                _context.Pictures.Add(picture);
+                await _context.SaveChangesAsync();
+                return picture;
+            }
+            catch (Exception) { throw; }
         }
 
         public async Task<Picture?> GetPicture(int id)
@@ -40,4 +52,7 @@ namespace PostHubAPI.Services
             return await _context.Pictures.FindAsync(id);
         }
     }
+
+
+
 }

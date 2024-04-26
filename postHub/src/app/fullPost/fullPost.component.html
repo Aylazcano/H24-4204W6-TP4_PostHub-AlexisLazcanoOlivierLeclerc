@@ -28,19 +28,23 @@
   <!-- Texte (et éventuellement images) du commentaire principal du post -->
   <div class="postContent">
     <div *ngIf="!toggleMainCommentEdit">{{post.mainComment!.text}}</div>
-    <textarea id="commentTextEdit" *ngIf="toggleMainCommentEdit" type="text" [(ngModel)]="newMainCommentText"></textarea>
-    <div class="commentPictures" *ngFor="let x of pictureIdList">
+    <textarea id="commentTextEdit" *ngIf="toggleMainCommentEdit" type="text"
+      [(ngModel)]="newMainCommentText"></textarea>
+    <div class="commentPictures">
       <!-- Des images pourraient être affichées ici -->
-      <img alt="id : {{x}}" [src]="'https://localhost:7007/api/Comments/GetCommentPicture/' + x">
+      <img *ngFor="let picId of picIdList" alt="picId"
+        [src]="'https://localhost:7007/api/Comments/GetFile/sm/' + picId">
     </div>
   </div>
 
   <!-- Boutons pour voter / modifier le commentaire principal du post -->
   <div class="postFooter">
     <div class="score">
-      <button [class]="post.mainComment!.upvoted ? 'upvoted' : ''" (click)="upvote()"><fa-icon [icon]="faUpLong"></fa-icon></button>
+      <button [class]="post.mainComment!.upvoted ? 'upvoted' : ''" (click)="upvote()"><fa-icon
+          [icon]="faUpLong"></fa-icon></button>
       <div>{{post.mainComment!.upvotes - post.mainComment!.downvotes}}</div>
-      <button [class]="post.mainComment!.downvoted ? 'downvoted' : ''" (click)="downvote()"><fa-icon [icon]="faDownLong"></fa-icon></button>
+      <button [class]="post.mainComment!.downvoted ? 'downvoted' : ''" (click)="downvote()"><fa-icon
+          [icon]="faDownLong"></fa-icon></button>
     </div>
     <div>
       <button><fa-icon [icon]="faMessage"></fa-icon> {{post.mainComment!.subCommentTotal}}</button>
@@ -57,7 +61,7 @@
   </div>
 
   <!-- Trier les commentaires du post par nouveauté / votes -->
-  <div id="sortOptions">Trier par : 
+  <div id="sortOptions">Trier par :
     <select name="commentSort" id="commentSort" [(ngModel)]="sorting" (change)="toggleSorting()">
       <option value="popular">Populaire</option>
       <option value="new">Nouveau</option>
@@ -68,7 +72,7 @@
   <div id="commentBox">
     <input type="text" name="newComment" id="newComment" placeholder="Ajouter un commentaire" [(ngModel)]="newComment">
     <div *ngIf="displayInputFile" class="commentPictureAdd">
-      <input type="file" accept="images/*" name="commentPictures">
+      <input #PicViewChild type="file" accept="images/*" name="commentPictures" multiple>
     </div>
     <button (click)="displayInputFile = !displayInputFile"><fa-icon [icon]="faImage"></fa-icon></button>
     <button (click)="createComment()">Ajouter</button>
@@ -76,7 +80,7 @@
 
   <!-- Liste de commentaires -->
   <div class="comment" *ngFor="let c of post.mainComment!.subComments">
-    <app-comment [comment]="c" ></app-comment>
+    <app-comment [comment]="c"></app-comment>
   </div>
 
 </div>

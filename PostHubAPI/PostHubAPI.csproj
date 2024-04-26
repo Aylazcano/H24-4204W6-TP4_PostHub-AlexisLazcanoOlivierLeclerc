@@ -24,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="images\post\" />
-    <Folder Include="Migrations\" />
+    <Folder Include="Images\lg\" />
+    <Folder Include="Images\sm\" />
   </ItemGroup>
 
 </Project>
