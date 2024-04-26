@@ -48,7 +48,8 @@
     </div>
     <div>
       <!-- Il faudra modifier cet input -->
-      <input *ngIf="editToggle" type="file" accept="images/*" name="editedCommentPictures">
+      
+      <input #PicViewChild *ngIf="editToggle" type="file" accept="images/*" multiple name="editedCommentPictures">
     </div>
     <div>
       <button *ngIf="editToggle" (click)="editToggle = false">Annuler</button>
@@ -65,7 +66,7 @@
   <input type="text" name="newComment" id="newComment" placeholder="Ajouter un commentaire" [(ngModel)]="newComment">
   <div *ngIf="displayInputFile" class="commentPictureAdd">
     <!-- Il faudra modifier cet input -->
-    <input type="file" accept="images/*" name="commentPictures">
+    <input #PicViewChild  type="file" accept="images/*" multiple name="commentPictures">
   </div>
   <button (click)="displayInputFile = !displayInputFile"><fa-icon [icon]="faImage"></fa-icon></button>
   <button (click)="createComment()">Ajouter</button>

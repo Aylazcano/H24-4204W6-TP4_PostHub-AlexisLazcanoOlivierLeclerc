@@ -48,21 +48,22 @@ namespace PostHubAPI.Controllers
             Hub? hub = await _hubService.GetHub(hubId);
             if (hub == null) return NotFound();
 
-            Comment? mainComment = await _commentService.CreateComment(user, postDTO.Text, null);
-            if(mainComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
+            // TEMPORAIRE: Paramettre List<Picture> = null
+            Comment? mainComment = await _commentService.CreateComment(user, postDTO.Text, null, null); 
+            if (mainComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
 
             Post? post = await _postService.CreatePost(postDTO.Title, hub, mainComment);
-            if(post == null) return StatusCode(StatusCodes.Status500InternalServerError);
+            if (post == null) return StatusCode(StatusCodes.Status500InternalServerError);
 
             bool voteToggleSuccess = await _commentService.UpvoteComment(mainComment.Id, user);
-            if(!voteToggleSuccess) return StatusCode(StatusCodes.Status500InternalServerError);
+            if (!voteToggleSuccess) return StatusCode(StatusCodes.Status500InternalServerError);
 
             return Ok(new PostDisplayDTO(post, true, user));
         }
 
         [HttpPost("{parentCommentId}")]
         [Authorize]
-        public async Task<ActionResult<CommentDisplayDTO>> PostComment(int parentCommentId, CommentDTO commentDTO)
+        public async Task<ActionResult<CommentDisplayDTO>> PostComment(int parentCommentId)
         {
             User? user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (user == null) return Unauthorized();
@@ -70,8 +71,25 @@ namespace PostHubAPI.Controllers
             Comment? parentComment = await _commentService.GetComment(parentCommentId);
             if (parentComment == null || parentComment.User == null) return BadRequest();
 
-            Comment? newComment = await _commentService.CreateComment(user, commentDTO.Text, parentComment);
-            if(newComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
+            string? text = Request.Form["text"];
+
+
+            IFormCollection formCollection = await Request.ReadFormAsync();
+            IEnumerable<IFormFile>? files = formCollection.Files.GetFiles("pics");
+            List<Picture> picList = new List<Picture>();
+            if (files != null)
+            {
+                foreach (IFormFile file in files)
+                {
+                    Picture? newPicture = await _pictureService.CreatePicture(file);
+                    if (newPicture == null) return StatusCode(StatusCodes.Status500InternalServerError);
+                    picList.Add(newPicture);
+                }
+            }
+
+
+            Comment? newComment = await _commentService.CreateComment(user, text, parentComment, picList);
+            if (newComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
 
             bool voteToggleSuccess = await _commentService.UpvoteComment(newComment.Id, user);
             if (!voteToggleSuccess) return StatusCode(StatusCodes.Status500InternalServerError);
@@ -89,12 +107,12 @@ namespace PostHubAPI.Controllers
 
             if (tabName == "myHubs" && user != null && user.Hubs != null)
             {
-                hubs = user.Hubs; 
+                hubs = user.Hubs;
             }
             else
             {
                 hubs = await _hubService.GetAllHubs();
-                if(hubs == null) return StatusCode(StatusCodes.Status500InternalServerError);
+                if (hubs == null) return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
             int postPerHub = (int)Math.Ceiling(10.0 / hubs.Count());
@@ -157,10 +175,10 @@ namespace PostHubAPI.Controllers
             User? user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             Post? post = await _postService.GetPost(postId);
-            if(post == null) return NotFound();
+            if (post == null) return NotFound();
 
             PostDisplayDTO postDisplayDTO = new PostDisplayDTO(post, true, user);
-            if (sorting == "popular") 
+            if (sorting == "popular")
                 postDisplayDTO.MainComment.SubComments = postDisplayDTO.MainComment!.SubComments!.OrderByDescending(c => c.Upvotes - c.Downvotes).ToList();
             else
                 postDisplayDTO.MainComment.SubComments = postDisplayDTO.MainComment!.SubComments!.OrderByDescending(c => c.Date).ToList();
@@ -179,8 +197,9 @@ namespace PostHubAPI.Controllers
 
             if (user == null || comment.User != user) return Unauthorized();
 
-            Comment? editedComment = await _commentService.EditComment(comment, commentDTO.Text);
-            if(editedComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
+            // TEMPORAIRE: Paramettre List<Picture> = null
+            Comment? editedComment = await _commentService.EditComment(comment, commentDTO.Text, null); 
+            if (editedComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
 
             return Ok(new CommentDisplayDTO(editedComment, true, user));
         }
@@ -190,7 +209,7 @@ namespace PostHubAPI.Controllers
         public async Task<ActionResult> UpvoteComment(int commentId)
         {
             User? user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            if(user == null) return BadRequest();
+            if (user == null) return BadRequest();
 
             bool voteToggleSuccess = await _commentService.UpvoteComment(commentId, user);
             if (!voteToggleSuccess) return StatusCode(StatusCodes.Status500InternalServerError);
@@ -234,7 +253,7 @@ namespace PostHubAPI.Controllers
                     if (deletedPost == null) return StatusCode(StatusCodes.Status500InternalServerError);
                 }
 
-                if(comment.GetSubCommentTotal() == 0)
+                if (comment.GetSubCommentTotal() == 0)
                 {
                     Comment? deletedComment = await _commentService.HardDeleteComment(comment);
                     if (deletedComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
