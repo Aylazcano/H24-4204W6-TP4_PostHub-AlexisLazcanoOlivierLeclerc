@@ -281,5 +281,23 @@ namespace PostHubAPI.Controllers
         {
             return hub.Posts!.OrderByDescending(p => p.MainComment?.Date).Take(qty);
         }
+
+        [HttpGet("{size}/{pictureId}")]
+        [AllowAnonymous]
+        public async Task<ActionResult> GetFile(string size, int pictureId)
+        {
+            Picture? picture = await _pictureService.GetPicture(pictureId);
+            if (picture == null || picture.FileName == null || picture.MimeType == null)
+            {
+                return NotFound(new { Message = "Cette image n'existe pas." });
+            }
+            if (!(Regex.Match(size, "lg|sm").Success))
+            {
+                return BadRequest(new { Message = "La taille de l'image doit être 'lg' ou 'sm'." });
+            }
+
+            byte[] bytes = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/" + size + "/" + picture.FileName);
+            return File(bytes, picture.MimeType);
+        }
     }
 }

@@ -28,6 +28,7 @@ export class CommentComponent implements OnInit {
   isAuthor: boolean = false;
   editMenu: boolean = false;
   displayInputFile: boolean = false;
+  picIdList: number[] | null | undefined = [];
 
   // Variables associées à des inputs
   newComment: string = "";
@@ -39,6 +40,7 @@ export class CommentComponent implements OnInit {
   ngOnInit() {
     this.isAuthor = localStorage.getItem("username") == this.comment?.username;
     this.editedText = this.comment?.text;
+    this.picIdList = this.comment?.pictureIds
   }
 
   // Créer un nouveau sous-commentaire au commentaire affiché dans ce composant

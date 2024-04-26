@@ -44,6 +44,14 @@ namespace PostHubAPI.Services
             }
             catch (Exception) { throw; }
         }
+
+        public async Task<Picture?> GetPicture(int id)
+        {
+            if (IsContextNull()) return null;
+            return await _context.Pictures.FindAsync(id);
+        }
     }
+
+
 
 }
