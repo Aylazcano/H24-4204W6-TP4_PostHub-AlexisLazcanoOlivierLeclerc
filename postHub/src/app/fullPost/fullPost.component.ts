@@ -61,7 +61,8 @@ export class FullPostComponent implements OnInit {
       text : this.newComment
     }
 
-    this.post?.mainComment?.subComments?.push(await this.postService.postComment(commentDTO, this.post.mainComment.id));
+    // TEMPORAIRE: Ligne commentée
+    //this.post?.mainComment?.subComments?.push(await this.postService.postComment(commentDTO, this.post.mainComment.id));
 
     this.newComment = "";
   }
