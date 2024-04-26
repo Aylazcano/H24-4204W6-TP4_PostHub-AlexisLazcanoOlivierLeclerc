@@ -11,7 +11,6 @@ namespace PostHubAPI.Models.DTOs
         public bool Upvoted { get; set; }
         public bool Downvoted { get; set; }
         public int SubCommentTotal { get; set; }
-        public List<int> PictureIds { get; set; }
         public List<CommentDisplayDTO>? SubComments { get; set; }
         public List<int>? PictureIds { get; set; }
         public CommentDisplayDTO() { }

@@ -27,8 +27,6 @@ namespace PostHubAPI.Models
         public virtual List<User>? Downvoters { get; set; } = new List<User>();
         public virtual List<Picture>? Pictures { get; set; } = new List<Picture>();
 
-        public virtual List<Picture> Pictures { get; set; } = new List<Picture>();
-
         public int GetSubCommentTotal()
         {
             SubComments ??= new List<Comment>();

@@ -84,9 +84,7 @@ namespace PostHubAPI.Controllers
             Comment? parentComment = await _commentService.GetComment(parentCommentId);
             if (parentComment == null || parentComment.User == null) return BadRequest();
 
-            Comment? newComment = await _commentService.CreateComment(user, commentDTO.Text, parentComment);
-            if(newComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
-
+            string? text = Request.Form["text"];
 
             IFormCollection formCollection = await Request.ReadFormAsync();
             IEnumerable<IFormFile>? files = formCollection.Files.GetFiles("pics");
@@ -322,7 +320,7 @@ namespace PostHubAPI.Controllers
 
         [HttpGet("{size}/{pictureId}")]
         [AllowAnonymous]
-        public async Task<ActionResult> GetFile(string size, int pictureId)
+        public async Task<ActionResult> GetCommentPicture(string size, int pictureId)
         {
             Picture? picture = await _pictureService.GetPicture(pictureId);
             if (picture == null || picture.FileName == null || picture.MimeType == null)
