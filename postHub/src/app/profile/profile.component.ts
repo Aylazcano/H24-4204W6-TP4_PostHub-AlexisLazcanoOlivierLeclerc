@@ -16,12 +16,26 @@ export class ProfileComponent implements OnInit {
   newPasswordConfirm : string = "";
 
   username : string | null = null;
+  
+  @ViewChild("PicViewChild", { static: false }) picInput?: ElementRef;
 
   constructor(public userService : UserService) { }
 
   ngOnInit() {
     this.userIsConnected = localStorage.getItem("token") != null;
     this.username = localStorage.getItem("username");
+  }
+
+  // TODO ChangeAvatar
+  async ChangeAvatar(){
+    let formData = new FormData();
+    if (this.picInput != undefined) {
+      let file = this.picInput.nativeElement.file;
+      if (file != null) {
+        formData.append("pics", file, file.fileName);
+      }
+    }
+
   }
 
 }

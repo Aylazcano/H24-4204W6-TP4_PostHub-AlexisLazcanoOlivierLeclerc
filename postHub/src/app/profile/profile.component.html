@@ -7,10 +7,21 @@
 
   <!-- Le formulaire pour changer le mot de passe vous est déjà fourni -->
   <div class="profile">
+
+    <div>Modifier l'avatar</div>
+    <!-- (TODO) L'Avatar pourraient être affichées ici -->
+    <!-- <img class="avatar" [src]="'https://localhost:7007/api/Users/GetUserAvatar/' + comment.username" alt="Avatar"> -->
+    <input #PicViewChild type="file" accept="images/*" name="newAvatar" id="newAvatar">
+    <button (click)="changerAvatar()">Modifier</button>
+
     <div>Modifier le mot de passe</div>
-    <input type="password" name="oldPassword" id="oldPassword" placeholder="Mot de passe actuel" [(ngModel)]="oldPassword">
-    <input type="password" name="newPassword" id="newPassword" placeholder="Nouveau mot de passe" [(ngModel)]="newPassword">
-    <input type="password" name="newPasswordConfirm" id="newPasswordConfirm" placeholder="Confirmer le nouveau mot de passe" [(ngModel)]="newPasswordConfirm">
+    <input type="password" name="oldPassword" id="oldPassword" placeholder="Mot de passe actuel"
+      [(ngModel)]="oldPassword">
+    <input type="password" name="newPassword" id="newPassword" placeholder="Nouveau mot de passe"
+      [(ngModel)]="newPassword">
+    <input type="password" name="newPasswordConfirm" id="newPasswordConfirm"
+      placeholder="Confirmer le nouveau mot de passe" [(ngModel)]="newPasswordConfirm">
     <button>Modifier</button>
+
   </div>
 </div>
