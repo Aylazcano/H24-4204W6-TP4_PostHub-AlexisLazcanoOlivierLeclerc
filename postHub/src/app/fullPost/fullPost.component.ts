@@ -1,8 +1,9 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { faDownLong, faEllipsis, faImage, faMessage, faUpLong, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { Post } from '../models/post';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '../services/post.service';
+import Glide from '@glidejs/glide';
 
 @Component({
   selector: 'app-fullPost',
@@ -16,8 +17,9 @@ export class FullPostComponent implements OnInit {
   sorting: string = "popular";
   newComment: string = "";
   newMainCommentText: string = "";
-  picIdList: number[] | null | undefined = [];
+  picIdList: number[] = [];
   @ViewChild("PicViewChild", { static: false }) picInput?: ElementRef;
+  @ViewChildren("glideitems") glideitems : QueryList<any> = new QueryList();
 
   // Booléens sus pour cacher / afficher des boutons
   isAuthor: boolean = false;
@@ -41,7 +43,9 @@ export class FullPostComponent implements OnInit {
     if (postId != null) {
       this.post = await this.postService.getPost(+postId, this.sorting);
       this.newMainCommentText = this.post.mainComment == null ? "" : this.post.mainComment.text;
-      this.picIdList = this.post.mainComment?.pictureIds;
+      if(this.post.mainComment?.pictureIds != null && this.post.mainComment.pictureIds != undefined){
+        this.picIdList = this.post.mainComment.pictureIds;
+      }
     }
 
 
@@ -146,5 +150,21 @@ export class FullPostComponent implements OnInit {
     if (this.post == null || this.post.mainComment == null) return;
     await this.postService.deleteComment(this.post.mainComment.id);
     this.router.navigate(["/"]);
+  }
+
+  ngAfterViewInit() {
+    this.glideitems.changes.subscribe(e => { this.initGlide(); });
+    if(this.glideitems.length > 0) {
+      this.initGlide();
+    }
+  }
+
+  initGlide() {
+    var glide = new Glide('.glide', {
+      type: 'carousel',
+      focusAt: 'center',
+      perView: Math.ceil(window.innerWidth / 400)
+    });
+    glide.mount();
   }
 }

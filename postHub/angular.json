@@ -30,7 +30,9 @@
               "src/styles.css" 
             ], 
             "scripts": [ 
-              "./node_modules/@glidejs/glide/dist/glide.min.js" 
+              "./node_modules/@glidejs/glide/dist/glide.min.js",
+              "node_modules/imagesloaded/imagesloaded.pkgd.min.js", 
+              "node_modules/masonry-layout/dist/masonry.pkgd.min.js"
             ] 
           },
           "configurations": {
