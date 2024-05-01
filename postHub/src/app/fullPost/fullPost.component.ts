@@ -19,6 +19,7 @@ export class FullPostComponent implements OnInit {
   newMainCommentText: string = "";
   picIdList: number[] = [];
   @ViewChild("PicViewChild", { static: false }) picInput?: ElementRef;
+  @ViewChild("EditPicViewChild", { static: false }) editPicInput?: ElementRef;
   @ViewChildren("glideitems") glideitems : QueryList<any> = new QueryList();
 
   // Booléens sus pour cacher / afficher des boutons
@@ -119,20 +120,15 @@ export class FullPostComponent implements OnInit {
 
   // Modifier le commentaire principal du post
   async editMainComment() {
-    // if (this.post == null || this.post.mainComment == null) return;
-
-    // let commentDTO = {
-    //   text: this.newMainCommentText
-    // }
     if (this.post == null || this.post.mainComment == null) return;
 
     if (this.post?.mainComment == null) return;
 
     let formData = new FormData();
-    formData.append("text", this.newComment)
+    formData.append("text", this.newMainCommentText)
 
-    if (this.picInput != undefined) {
-      let files = this.picInput.nativeElement.files;
+    if (this.editPicInput != undefined) {
+      let files = this.editPicInput.nativeElement.files;
       if (files != null) {
         for (let file of files) {
           formData.append("pics", file, file.fileName)
@@ -141,7 +137,9 @@ export class FullPostComponent implements OnInit {
     }
 
     let newMainComment = await this.postService.editComment(formData, this.post?.mainComment.id);
+    console.log(newMainComment);
     this.post.mainComment = newMainComment;
+    this.picIdList = newMainComment.pictureIds!;
     this.toggleMainCommentEdit = false;
   }
 
