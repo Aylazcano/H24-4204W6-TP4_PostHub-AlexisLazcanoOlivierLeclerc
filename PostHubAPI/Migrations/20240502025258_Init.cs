@@ -5,11 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PostHubAPI.Migrations
 {
-<<<<<<<< HEAD:PostHubAPI/Migrations/20240501132757_Init.cs
     public partial class Init : Migration
-========
-    public partial class init : Migration
->>>>>>>> origin/dev:PostHubAPI/Migrations/20240501135518_init.cs
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

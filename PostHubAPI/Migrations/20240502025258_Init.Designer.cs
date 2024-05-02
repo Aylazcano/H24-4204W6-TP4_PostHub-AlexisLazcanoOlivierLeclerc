@@ -12,13 +12,8 @@ using PostHubAPI.Data;
 namespace PostHubAPI.Migrations
 {
     [DbContext(typeof(PostHubAPIContext))]
-<<<<<<<< HEAD:PostHubAPI/Migrations/20240501132757_Init.Designer.cs
-    [Migration("20240501132757_Init")]
+    [Migration("20240502025258_Init")]
     partial class Init
-========
-    [Migration("20240501135518_init")]
-    partial class init
->>>>>>>> origin/dev:PostHubAPI/Migrations/20240501135518_init.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
