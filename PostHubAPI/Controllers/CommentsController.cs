@@ -56,7 +56,7 @@ namespace PostHubAPI.Controllers
             List<Picture> list = new List<Picture>();
             foreach (IFormFile file in files)
             {
-                Picture newPic = await _pictureService.CreatePicture(file); 
+                Picture? newPic = await _pictureService.CreatePicture(file); 
                 if (newPic != null)
                 {
                     list.Add(newPic);

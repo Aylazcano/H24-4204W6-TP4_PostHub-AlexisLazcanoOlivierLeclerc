@@ -62,7 +62,7 @@ export class CommentComponent implements OnInit {
       let files = this.picInput.nativeElement.files;
       if (files != null) {
         for (let file of files) {
-          formData.append("pics", file, file.fileName)
+          formData.append("pics", file, file.fileName);
         }
       }
     }

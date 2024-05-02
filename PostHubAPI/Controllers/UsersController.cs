@@ -6,11 +6,14 @@ using Microsoft.IdentityModel.Tokens;
 using NuGet.Protocol.Plugins;
 using PostHubAPI.Models;
 using PostHubAPI.Models.DTOs;
+using PostHubAPI.Services;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
+using System.Drawing;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace PostHubAPI.Controllers
 {
@@ -19,10 +22,12 @@ namespace PostHubAPI.Controllers
     public class UsersController : ControllerBase
     {
         readonly UserManager<User> _userManager;
+        readonly PictureService _pictureService;
 
-        public UsersController(UserManager<User> userManager)
+        public UsersController(UserManager<User> userManager, PictureService pictureService)
         {
             _userManager = userManager;
+            _pictureService = pictureService;
         }
 
         [HttpPost]
@@ -81,6 +86,63 @@ namespace PostHubAPI.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest,
                     new { Message = "Le nom d'utilisateur ou le mot de passe est invalide." });
             }
+        }
+
+        [HttpGet("{username}")]
+        [AllowAnonymous]
+        public async Task<ActionResult> GetUserAvatar(string username)
+        {
+            User user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new { Message = "Le nom d'utilisateur est invalide." });
+            }
+            else
+            {
+                if (user.FileName == null || user.MimeType == null)
+                {
+                    byte[] bytesDefault = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/sm/default.png");
+                    return File(bytesDefault, "image/png");
+                }
+
+                byte[] bytes = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/sm/" + user.FileName);
+                return File(bytes, user.MimeType);
+            }
+        }
+
+        [HttpPut]
+        [Authorize]
+        [DisableRequestSizeLimit]
+        public async Task<ActionResult> ChangeAvatar()
+        {
+            // Récupérer l'utilisateur
+            User? user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (user == null) return Unauthorized();
+
+            // Récupérer le fichier
+            IFormCollection formCollection = await Request.ReadFormAsync();
+            IFormFile? file = formCollection.Files.GetFile("avatarImage");
+            if (file != null)
+            {
+                Picture? newPicture = await _pictureService.CreatePicture(file);
+                if (newPicture == null)
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+
+                // Supprimer l'ancienne image
+                if (user.FileName != null && user.MimeType != null)
+                {
+                    System.IO.File.Delete(Directory.GetCurrentDirectory() + "/images/lg/" + user.FileName);
+                    System.IO.File.Delete(Directory.GetCurrentDirectory() + "/images/sm/" + user.FileName);
+                }
+
+                // Mettre à jour l'utilisateur
+                user.FileName = newPicture.FileName;
+                user.MimeType = newPicture.MimeType;
+                await _userManager.UpdateAsync(user);
+            }
+
+            return Ok();
         }
     }
 }
