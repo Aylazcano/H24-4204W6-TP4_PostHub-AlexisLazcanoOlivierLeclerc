@@ -220,7 +220,6 @@ namespace PostHubAPI.Controllers
 
             string? text = Request.Form["text"];
 
-
             IFormCollection formCollection = await Request.ReadFormAsync();
             IEnumerable<IFormFile>? files = formCollection.Files.GetFiles("pics");
             List<Picture> picList = new List<Picture>();

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PostHubAPI.Data;
 using PostHubAPI.Models;
@@ -50,6 +51,21 @@ namespace PostHubAPI.Services
         {
             if (IsContextNull()) return null;
             return await _context.Pictures.FindAsync(id);
+        }
+
+        public async Task<IActionResult> deletePicture(int id)
+        {
+            Picture? picture = await _context.Pictures.FindAsync(id);
+            if (picture == null) return new NotFoundResult();
+
+            if(picture.FileName != null && picture.MimeType != null)
+            {
+                System.IO.File.Delete(Directory.GetCurrentDirectory() + "/images/lg/" + picture.FileName);
+                System.IO.File.Delete(Directory.GetCurrentDirectory() + "/images/sm/" + picture.FileName);
+            }
+            _context.Pictures.Remove(picture);
+            await _context.SaveChangesAsync();
+            return new OkResult();
         }
     }
 

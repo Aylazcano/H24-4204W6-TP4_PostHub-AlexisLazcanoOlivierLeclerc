@@ -100,7 +100,7 @@ namespace PostHubAPI.Controllers
             }
             else
             {
-                if ( user.FileName == null || user.MimeType == null)
+                if (user.FileName == null || user.MimeType == null)
                 {
                     byte[] bytesDefault = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/sm/default.png");
                     return File(bytesDefault, "image/png");
@@ -111,11 +111,38 @@ namespace PostHubAPI.Controllers
             }
         }
 
-        //[HttpPut]
-        //[Authorize]
-        //public async Task<ActionResult> ChangeAvatar()
-        //{
-        //    return Ok();
-        //}
+        [HttpPut]
+        [Authorize]
+        [DisableRequestSizeLimit]
+        public async Task<ActionResult> ChangeAvatar()
+        {
+            // Récupérer l'utilisateur
+            User? user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (user == null) return Unauthorized();
+
+            // Récupérer le fichier
+            IFormCollection formCollection = await Request.ReadFormAsync();
+            IFormFile? file = formCollection.Files.GetFile("avatarImage");
+            if (file != null)
+            {
+                Picture? newPicture = await _pictureService.CreatePicture(file);
+                if (newPicture == null)
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+
+                // Supprimer l'ancienne image
+                if (user.FileName != null && user.MimeType != null)
+                {
+                    System.IO.File.Delete(Directory.GetCurrentDirectory() + "/images/lg/" + user.FileName);
+                    System.IO.File.Delete(Directory.GetCurrentDirectory() + "/images/sm/" + user.FileName);
+                }
+
+                // Mettre à jour l'utilisateur
+                user.FileName = newPicture.FileName;
+                user.MimeType = newPicture.MimeType;
+                await _userManager.UpdateAsync(user);
+            }
+
+            return Ok();
+        }
     }
 }

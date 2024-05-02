@@ -7,16 +7,16 @@ import { lastValueFrom } from 'rxjs';
 })
 export class UserService {
 
-  constructor(public http : HttpClient) { }
+  constructor(public http: HttpClient) { }
 
   // S'inscrire
-  async register(username : string, email : string, password : string, passwordConfirm : string) : Promise<void>{
+  async register(username: string, email: string, password: string, passwordConfirm: string): Promise<void> {
 
     let registerDTO = {
-      username : username,
-      email : email,
-      password : password,
-      passwordConfirm : passwordConfirm
+      username: username,
+      email: email,
+      password: password,
+      passwordConfirm: passwordConfirm
     };
 
     let x = await lastValueFrom(this.http.post<any>("https://localhost:7007/api/Users/Register", registerDTO));
@@ -24,11 +24,10 @@ export class UserService {
   }
 
   // Se connecter
-  async login(username : string, password : string) : Promise<void>{
-
+  async login(username: string, password: string): Promise<void> {
     let loginDTO = {
-      username : username,
-      password : password
+      username: username,
+      password: password
     };
 
     let x = await lastValueFrom(this.http.post<any>("https://localhost:7007/api/Users/Login", loginDTO));
@@ -38,5 +37,11 @@ export class UserService {
     localStorage.setItem("token", x.token);
     localStorage.setItem("username", x.username);
   }
+
+  async changeAvatar(formData: FormData): Promise<void> {
+    let x = await lastValueFrom(this.http.put<any>("https://localhost:7007/api/Users/ChangeAvatar", formData));
+    console.log(x);
+  }
+
 
 }
