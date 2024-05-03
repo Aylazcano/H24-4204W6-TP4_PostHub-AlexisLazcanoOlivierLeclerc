@@ -25,6 +25,13 @@
     <input type="password" name="newPasswordConfirm" id="newPasswordConfirm"
       placeholder="Confirmer le nouveau mot de passe" [(ngModel)]="newPasswordConfirm">
     <button type="submit" (click)="changePassword()">Modifier</button>
+  </div>
 
+  <!-- Le formulaire pour ajouter un moderator -->
+  <div class="profile">
+    <div>Ajouter un modérateur</div>
+    <input type="text" name="newModerator" id="newModerator" placeholder="Nom d'utilisateur"
+      [(ngModel)]="newModerator">
+    <button type="submit" (click)="makeUserModerator()">Ajouter</button>
   </div>
 </div>
