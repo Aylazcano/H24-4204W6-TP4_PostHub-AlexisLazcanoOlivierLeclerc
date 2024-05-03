@@ -113,6 +113,7 @@ export class CommentComponent implements OnInit {
       this.comment.downvoted = false;
       this.comment.upvotes = 0;
       this.comment.downvotes = 0;
+      this.comment.pictureIds = [];
       this.comment.text = "Commentaire supprimé.";
       this.isAuthor = false;
     }
@@ -120,6 +121,7 @@ export class CommentComponent implements OnInit {
     else {
       this.comment = null;
     }
+    this.picIdList = [];
   }
 
   // Upvoter (notez que ça annule aussi tout downvote fait pas soi-même)

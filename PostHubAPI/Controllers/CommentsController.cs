@@ -276,6 +276,11 @@ namespace PostHubAPI.Controllers
 
             if (user == null || comment.User != user) return Unauthorized();
 
+            for(int i = comment.Pictures.Count - 1; i >= 0; i--) 
+            {
+                await _pictureService.deletePicture(comment.Pictures[i].Id);
+            }
+
             do
             {
                 comment.SubComments ??= new List<Comment>();
