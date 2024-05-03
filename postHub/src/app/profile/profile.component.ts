@@ -46,4 +46,11 @@ export class ProfileComponent implements OnInit {
     window.location.reload();
   }
 
+  async changePassword(){
+    let formData = new FormData();
+    formData.append("oldPassword", this.oldPassword)
+    formData.append("newPassword", this.newPassword)
+    formData.append("newPasswordConfirm", this.newPasswordConfirm)
+    await this.userService.changePassword(formData)
+  }
 }

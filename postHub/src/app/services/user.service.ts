@@ -43,5 +43,8 @@ export class UserService {
     console.log(x);
   }
 
-
+  async changePassword(formData: FormData): Promise<void> {
+    let x = await lastValueFrom(this.http.put<any>("https://localhost:7007/api/Users/ChangePassword", formData));
+    console.log(x);
+  }
 }

@@ -24,7 +24,7 @@
       [(ngModel)]="newPassword">
     <input type="password" name="newPasswordConfirm" id="newPasswordConfirm"
       placeholder="Confirmer le nouveau mot de passe" [(ngModel)]="newPasswordConfirm">
-    <button>Modifier</button>
+    <button type="submit" (click)="changePassword()">Modifier</button>
 
   </div>
 </div>

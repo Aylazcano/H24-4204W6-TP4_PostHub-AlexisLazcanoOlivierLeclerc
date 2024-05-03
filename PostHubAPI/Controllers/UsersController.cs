@@ -55,7 +55,7 @@ namespace PostHubAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(LoginDTO login)
         {
-            User user = await _userManager.FindByNameAsync(login.Username);
+            User user = await _userManager.FindByNameAsync(login.Username) ?? await _userManager.FindByEmailAsync(login.Username);
             if (user != null && await _userManager.CheckPasswordAsync(user, login.Password))
             {
                 IList<string> roles = await _userManager.GetRolesAsync(user);
@@ -87,6 +87,31 @@ namespace PostHubAPI.Controllers
                     new { Message = "Le nom d'utilisateur ou le mot de passe est invalide." });
             }
         }
+
+        [HttpPut]
+        public async Task<ActionResult> ChangePassword()
+        {
+            User? user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (user == null) return Unauthorized();
+
+            string? oldPassword = Request.Form["oldPassword"];
+            string? newPassword = Request.Form["newPassword"]; 
+            string? newPasswordConfirm = Request.Form["newPasswordConfirm"];
+            // Vérification du nouveau mot de passe
+            if (newPassword != newPasswordConfirm)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new { Message = "Les deux mots de passe spécifiés sont différents." });
+            }
+            IdentityResult identityResult = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+            if (!identityResult.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { Message = "La modification du mot de passe a échoué." });
+            }
+            return Ok(new { Message = "Le mot de passe à été changé!" });
+        }
+
 
         [HttpGet("{username}")]
         [AllowAnonymous]
