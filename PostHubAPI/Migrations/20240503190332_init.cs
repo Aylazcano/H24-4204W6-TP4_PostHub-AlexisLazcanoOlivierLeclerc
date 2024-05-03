@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PostHubAPI.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -312,6 +312,34 @@ namespace PostHubAPI.Migrations
                         principalTable: "Hubs",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "1", "aecdbfd1-4a99-4490-a5b8-eeb78dad4f37", "admin", "ADMIN" },
+                    { "2", "aa86de6f-e5b7-4799-bdd7-d59129b30283", "moderator", "MODERATOR" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FileName", "LockoutEnabled", "LockoutEnd", "MimeType", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "11111111-1111-1111-1111-111111111111", 0, "262e2a19-b230-4254-b6b9-c907dfdfb3fd", "a@a.a", false, null, false, null, null, "A@A.A", "ADMIN", "AQAAAAEAACcQAAAAELDxHodhFuQGiTuFkvDcVOtSgXfbcYCpUZwMtoEZ7dnwNQplklfUrgCTEG/Pw1ytSA==", null, false, "f4b57f9c-39a4-405f-b58e-578014760934", false, "admin" },
+                    { "11111111-1111-1111-1111-111111111112", 0, "fe1e1de8-3107-4c43-8eb0-5f7323a7f5eb", "m@m.m", false, null, false, null, null, "M@M.M", "MODERATOR", "AQAAAAEAACcQAAAAECRyO6HzhLCImHyzpVHQxIKWbWlm2YmQGv5aGJ4lXiL/K9LZwhNx6QGsl5QK0DJXzQ==", null, false, "4fb76c9b-953c-42c6-8b94-29832850e289", false, "moderator" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "1", "11111111-1111-1111-1111-111111111111" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "2", "11111111-1111-1111-1111-111111111112" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -15,6 +15,7 @@ export class ProfileComponent implements OnInit {
   oldPassword: string = "";
   newPassword: string = "";
   newPasswordConfirm: string = "";
+  newModerator: string = "";
 
   username: string | null = null;
 
@@ -52,5 +53,9 @@ export class ProfileComponent implements OnInit {
     formData.append("newPassword", this.newPassword)
     formData.append("newPasswordConfirm", this.newPasswordConfirm)
     await this.userService.changePassword(formData)
+  }
+
+  async makeUserModerator(){
+    await this.userService.makeUserModerator(this.newModerator)
   }
 }

@@ -12,8 +12,8 @@ using PostHubAPI.Data;
 namespace PostHubAPI.Migrations
 {
     [DbContext(typeof(PostHubAPIContext))]
-    [Migration("20240502025258_Init")]
-    partial class Init
+    [Migration("20240503190332_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -94,6 +94,22 @@ namespace PostHubAPI.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            ConcurrencyStamp = "aecdbfd1-4a99-4490-a5b8-eeb78dad4f37",
+                            Name = "admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            ConcurrencyStamp = "aa86de6f-e5b7-4799-bdd7-d59129b30283",
+                            Name = "moderator",
+                            NormalizedName = "MODERATOR"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -181,6 +197,18 @@ namespace PostHubAPI.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "11111111-1111-1111-1111-111111111111",
+                            RoleId = "1"
+                        },
+                        new
+                        {
+                            UserId = "11111111-1111-1111-1111-111111111112",
+                            RoleId = "2"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -372,6 +400,40 @@ namespace PostHubAPI.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "11111111-1111-1111-1111-111111111111",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "262e2a19-b230-4254-b6b9-c907dfdfb3fd",
+                            Email = "a@a.a",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "A@A.A",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAELDxHodhFuQGiTuFkvDcVOtSgXfbcYCpUZwMtoEZ7dnwNQplklfUrgCTEG/Pw1ytSA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "f4b57f9c-39a4-405f-b58e-578014760934",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = "11111111-1111-1111-1111-111111111112",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "fe1e1de8-3107-4c43-8eb0-5f7323a7f5eb",
+                            Email = "m@m.m",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "M@M.M",
+                            NormalizedUserName = "MODERATOR",
+                            PasswordHash = "AQAAAAEAACcQAAAAECRyO6HzhLCImHyzpVHQxIKWbWlm2YmQGv5aGJ4lXiL/K9LZwhNx6QGsl5QK0DJXzQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "4fb76c9b-953c-42c6-8b94-29832850e289",
+                            TwoFactorEnabled = false,
+                            UserName = "moderator"
+                        });
                 });
 
             modelBuilder.Entity("CommentUser", b =>

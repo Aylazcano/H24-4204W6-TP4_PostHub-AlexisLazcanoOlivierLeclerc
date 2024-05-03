@@ -47,4 +47,9 @@ export class UserService {
     let x = await lastValueFrom(this.http.put<any>("https://localhost:7007/api/Users/ChangePassword", formData));
     console.log(x);
   }
+
+  async makeUserModerator(username: string): Promise<void> {
+    let x = await lastValueFrom(this.http.put<any>("https://localhost:7007/api/Users/MakeUserModerator/" +username, null));
+    console.log(x);
+  }
 }

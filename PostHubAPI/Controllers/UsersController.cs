@@ -169,5 +169,18 @@ namespace PostHubAPI.Controllers
 
             return Ok();
         }
+
+        [HttpPut("{username}")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> MakeUserModerator(string username)
+        {
+            User? newModerator = await _userManager.FindByNameAsync(username);
+            if (newModerator == null)
+            {
+                return NotFound(new { Message = "Cet utilisateur n'existe pas." });
+            }
+            await _userManager.AddToRoleAsync(newModerator, "moderator");
+            return Ok(new {Message = username + " est maintenant un moderator!"});
+        }
     }
 }
