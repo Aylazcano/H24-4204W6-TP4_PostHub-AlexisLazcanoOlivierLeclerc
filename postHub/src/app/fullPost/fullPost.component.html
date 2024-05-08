@@ -32,15 +32,17 @@
     <div class="commentPictures">
       <!-- Des images pourraient être affichées ici -->
       <div style="width: 100%;" *ngIf="picIdList.length > 4; else elseBlock">
-        <div class="glide" >
+        <div class="glide">
           <div class="glide__track" data-glide-el="track">
             <ul class="glide__slides">
               <li class="glide__slide" style="height: 200px;" *ngFor="let picId of picIdList" #glideitems>
-                <img alt="picId" [src]="'https://localhost:7007/api/Comments/GetCommentPicture/sm/' + picId" style="object-fit: cover;width: 100%; height: 100%;">
+                <a [href]="'https://localhost:7007/api/Comments/GetCommentPicture/lg/' + picId" target="_blank">
+                  <img alt="picId" [src]="'https://localhost:7007/api/Comments/GetCommentPicture/sm/' + picId" style="object-fit: cover;width: 100%; height: 100%;">
+                </a>
               </li>
             </ul>
           </div>
-        <!-- Les flèches pour le déplacement -->
+          <!-- Les flèches pour le déplacement -->
           <div class="glide__arrows" data-glide-el="controls">
             <div class="arrow glide__arrow glide__arrow--left" data-glide-dir="<">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="align-self: center;">
