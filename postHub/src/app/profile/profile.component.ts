@@ -18,6 +18,7 @@ export class ProfileComponent implements OnInit {
   newModerator: string = "";
 
   username: string | null = null;
+  isAdmin: boolean = false;
 
   @ViewChild("AvatarViewChild", { static: false }) avatarInput?: ElementRef;
   avatarImage: any;
@@ -27,6 +28,10 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.userIsConnected = localStorage.getItem("token") != null;
     this.username = localStorage.getItem("username");
+    let roles = localStorage.getItem("roles");
+    if(roles?.includes("admin")){
+      this.isAdmin = true;
+    }
   }
 
   async changeAvatar() {

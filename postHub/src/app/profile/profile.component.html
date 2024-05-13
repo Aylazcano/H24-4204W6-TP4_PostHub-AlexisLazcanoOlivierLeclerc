@@ -28,7 +28,7 @@
   </div>
 
   <!-- Le formulaire pour ajouter un moderator -->
-  <div class="profile">
+  <div class="profile" *ngIf="isAdmin">
     <div>Ajouter un modérateur</div>
     <input type="text" name="newModerator" id="newModerator" placeholder="Nom d'utilisateur"
       [(ngModel)]="newModerator">

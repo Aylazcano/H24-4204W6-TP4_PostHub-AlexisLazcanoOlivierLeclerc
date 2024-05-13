@@ -78,7 +78,8 @@ namespace PostHubAPI.Controllers
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     validTo = token.ValidTo,
-                    username = user.UserName // Ceci sert déjà à afficher / cacher certains boutons côté Angular
+                    username = user.UserName,
+                    roles // Ceci sert déjà à afficher / cacher certains boutons côté Angular
                 });
             }
             else
@@ -89,6 +90,7 @@ namespace PostHubAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public async Task<ActionResult> ChangePassword()
         {
             User? user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
