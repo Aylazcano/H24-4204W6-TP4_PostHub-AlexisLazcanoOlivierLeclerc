@@ -36,6 +36,7 @@ export class UserService {
     // N'hésitez pas à ajouter d'autres infos dans le stockage local... pourrait vous aider pour la partie admin / modérateur
     localStorage.setItem("token", x.token);
     localStorage.setItem("username", x.username);
+    localStorage.setItem("roles", x.roles)
   }
 
   async changeAvatar(formData: FormData): Promise<void> {
