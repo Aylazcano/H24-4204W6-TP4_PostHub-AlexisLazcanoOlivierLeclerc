@@ -18,6 +18,7 @@ export class FullPostComponent implements OnInit {
   newComment: string = "";
   newMainCommentText: string = "";
   picIdList: number[] = [];
+  picIdToDelete : string = "";
   @ViewChild("PicViewChild", { static: false }) picInput?: ElementRef;
   @ViewChild("EditPicViewChild", { static: false }) editPicInput?: ElementRef;
   @ViewChildren("glideitems") glideitems : QueryList<any> = new QueryList();
@@ -148,6 +149,18 @@ export class FullPostComponent implements OnInit {
     if (this.post == null || this.post.mainComment == null) return;
     await this.postService.deleteComment(this.post.mainComment.id);
     this.router.navigate(["/"]);
+  }
+
+  async deleteCommentPicture(pictureId : number){
+    if (this.picIdToDelete == null) return;
+    await this.postService.deleteCommentPicture(pictureId)
+    if(this.picIdList.length > 4){
+      window.location.reload();
+    }
+    else{
+      this.picIdList = this.picIdList.filter(id => id !== pictureId);
+    }
+
   }
 
   ngAfterViewInit() {

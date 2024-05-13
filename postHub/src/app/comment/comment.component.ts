@@ -29,6 +29,7 @@ export class CommentComponent implements OnInit {
   editMenu: boolean = false;
   displayInputFile: boolean = false;
   picIdList: number[] | null | undefined = [];
+  picIdToDelete: string = "";
 
   // Variables associées à des inputs
   newComment: string = "";
@@ -122,6 +123,13 @@ export class CommentComponent implements OnInit {
       this.comment = null;
     }
     this.picIdList = [];
+  }
+
+  async deleteCommentPicture(pictureId : number){
+    if (this.picIdToDelete == null) return;
+    
+    await this.postService.deleteCommentPicture(pictureId)
+    this.picIdList = this.picIdList?.filter(id => id !== pictureId);
   }
 
   // Upvoter (notez que ça annule aussi tout downvote fait pas soi-même)
