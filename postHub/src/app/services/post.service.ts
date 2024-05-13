@@ -65,9 +65,15 @@ export class PostService {
 
   }
 
+  // Supprimer une image d'un commentaire (que ce soit le commentaire principal d'un post ou un sous-commentaire)
+  async deleteCommentPicture(pictureId: number): Promise<void> {
+    let x = await lastValueFrom(this.http.delete<any>("https://localhost:7007/api/Comments/DeleteCommentPicture/" + pictureId))
+    console.log(x);
+
+  }
+
   // Supprimer un commentaire (que ce soit le commentaire principal d'un post ou un sous-commentaire)
   async deleteComment(commentId: number): Promise<void> {
-
     let x = await lastValueFrom(this.http.delete<any>("https://localhost:7007/api/Comments/DeleteComment/" + commentId));
     console.log(x);
 

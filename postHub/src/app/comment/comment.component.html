@@ -18,8 +18,10 @@
     </div>
     <div class="commentPictures">
       <!-- (COMPLETÉ) Des images pourraient être affichées ici -->
-      <img *ngFor="let picId of picIdList" alt="picId"
-        [src]="'https://localhost:7007/api/Comments/GetCommentPicture/sm/' + picId">
+      <div class="pictureFrame" *ngFor="let picId of picIdList" alt="picId">
+        <button  class="pictureDelete" *ngIf="isAuthor" (click)="deleteCommentPicture(picId)">X</button>
+        <img alt="picId" [src]="'https://localhost:7007/api/Comments/GetCommentPicture/sm/' + picId">
+      </div>
     </div>
   </div>
 

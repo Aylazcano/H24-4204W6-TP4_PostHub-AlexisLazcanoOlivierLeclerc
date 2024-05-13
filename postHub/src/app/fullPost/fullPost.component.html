@@ -36,9 +36,12 @@
           <div class="glide__track" data-glide-el="track">
             <ul class="glide__slides">
               <li class="glide__slide" style="height: 200px;" *ngFor="let picId of picIdList" #glideitems>
-                <a [href]="'https://localhost:7007/api/Comments/GetCommentPicture/lg/' + picId" target="_blank">
-                  <img alt="picId" [src]="'https://localhost:7007/api/Comments/GetCommentPicture/sm/' + picId" style="object-fit: cover;width: 100%; height: 100%;">
-                </a>
+                <div class="pictureFrame">
+                  <button class="pictureDelete" *ngIf="isAuthor" (click)="deleteCommentPicture(picId)">X</button>
+                  <a [href]="'https://localhost:7007/api/Comments/GetCommentPicture/lg/' + picId" target="_blank">
+                    <img alt="picId" [src]="'https://localhost:7007/api/Comments/GetCommentPicture/sm/' + picId" style="object-fit: cover;width: 100%; height: 100%;">
+                  </a>
+                </div>
               </li>
             </ul>
           </div>
@@ -58,7 +61,14 @@
         </div>
       </div>
       <!-- elseBlock pour quand il y a 4 ou moins d'images-->
-      <ng-template #elseBlock><img *ngFor="let picId of picIdList" alt="picId" [src]="'https://localhost:7007/api/Comments/GetCommentPicture/sm/' + picId"></ng-template>
+      <ng-template #elseBlock>
+        <div class="pictureFrame" *ngFor="let picId of picIdList" alt="picId">
+          <button class="pictureDelete" *ngIf="isAuthor" (click)="deleteCommentPicture(picId)">X</button>
+          <a [href]="'https://localhost:7007/api/Comments/GetCommentPicture/lg/' + picId" target="_blank">
+            <img alt="picId" [src]="'https://localhost:7007/api/Comments/GetCommentPicture/sm/' + picId" style="object-fit: cover;width: 100%; height: 100%;">
+          </a>
+        </div>
+      </ng-template>
     </div>
   </div>
 

@@ -239,6 +239,24 @@ namespace PostHubAPI.Controllers
             return Ok(new CommentDisplayDTO(editedComment, true, user));
         }
 
+        [HttpDelete("{pictureId}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteCommentPicture(int pictureId)
+        {
+            User? user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (user == null) return Unauthorized();
+
+            IActionResult result =  await _pictureService.deletePicture(pictureId);
+            if (result is OkResult)
+            {
+                return Ok(new { Message = "Image supprimée." });
+            }
+            else
+            {
+                return result;
+            }     
+        }
+
         [HttpPut("{commentId}")]
         [Authorize]
         public async Task<ActionResult> UpvoteComment(int commentId)
