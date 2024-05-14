@@ -56,17 +56,17 @@ namespace PostHubAPI.Controllers
             List<Picture> list = new List<Picture>();
             foreach (IFormFile file in files)
             {
-                Picture? newPic = await _pictureService.CreatePicture(file); 
+                Picture? newPic = await _pictureService.CreatePicture(file);
                 if (newPic != null)
                 {
                     list.Add(newPic);
                 }
             }
             Comment? mainComment = await _commentService.CreateComment(user, postText, null, list);
-            if(mainComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
-            
+            if (mainComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
+
             Post? post = await _postService.CreatePost(postTitle, hub, mainComment);
-            if(post == null) return StatusCode(StatusCodes.Status500InternalServerError);
+            if (post == null) return StatusCode(StatusCodes.Status500InternalServerError);
 
             bool voteToggleSuccess = await _commentService.UpvoteComment(mainComment.Id, user);
             if (!voteToggleSuccess) return StatusCode(StatusCodes.Status500InternalServerError);
@@ -195,7 +195,18 @@ namespace PostHubAPI.Controllers
             return Ok(postDisplayDTO);
         }
 
-        //TODO: GetReportedComments
+        [HttpGet]
+        [Authorize(Roles = "moderator")]
+        public async Task<ActionResult<IEnumerable<CommentDisplayDTO>>?> GetReportedComments()
+        {
+            User? user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (user == null) return Unauthorized();
+
+            IEnumerable<Comment>? reportedComments = await _commentService.GetReportedComments();
+            if (reportedComments == null) return StatusCode(StatusCodes.Status500InternalServerError);
+
+            return Ok(reportedComments.Select(c => new CommentDisplayDTO(c, false, user)));
+        }
 
         [HttpGet("{size}/{pictureId}")]
         [AllowAnonymous]
@@ -241,7 +252,7 @@ namespace PostHubAPI.Controllers
                 }
             }
 
-            Comment? editedComment = await _commentService.EditComment(comment, text, picList); 
+            Comment? editedComment = await _commentService.EditComment(comment, text, picList);
             if (editedComment == null) return StatusCode(StatusCodes.Status500InternalServerError);
 
             return Ok(new CommentDisplayDTO(editedComment, true, user));
@@ -254,7 +265,7 @@ namespace PostHubAPI.Controllers
             User? user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (user == null) return Unauthorized();
 
-            IActionResult result =  await _pictureService.deletePicture(pictureId);
+            IActionResult result = await _pictureService.deletePicture(pictureId);
             if (result is OkResult)
             {
                 return Ok(new { Message = "Image supprimée." });
@@ -262,7 +273,7 @@ namespace PostHubAPI.Controllers
             else
             {
                 return result;
-            }     
+            }
         }
 
         [HttpPut("{commentId}")]
@@ -300,9 +311,9 @@ namespace PostHubAPI.Controllers
             Comment? comment = await _commentService.GetComment(commentId);
             if (comment == null) return NotFound();
 
-            if (user == null || comment.User != user) return Unauthorized();
+            if (user == null || (comment.User != user && !await _userManager.IsInRoleAsync(user, "moderator"))) return Unauthorized();
 
-            for(int i = comment.Pictures.Count - 1; i >= 0; i--) 
+            for (int i = comment.Pictures.Count - 1; i >= 0; i--)
             {
                 await _pictureService.deletePicture(comment.Pictures[i].Id);
             }
@@ -347,7 +358,7 @@ namespace PostHubAPI.Controllers
 
             return Ok(new { Message = "Commentaire signalé." });
         }
-        
+
         private static IEnumerable<Post> GetPopularPosts(Hub hub, int qty)
         {
             return hub.Posts!.OrderByDescending(p => p.MainComment?.Upvoters?.Count - p.MainComment?.Downvoters?.Count).Take(qty);

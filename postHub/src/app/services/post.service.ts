@@ -79,7 +79,8 @@ export class PostService {
 
   }
 
-  async reportComment(CommentId:number):Promise<void>{
+  // Report un commentaire (que ce soit le commentaire principal d'un post ou un sous-commentaire)
+  async reportComment(CommentId: number): Promise<void> {
     let x = await lastValueFrom(this.http.put<any>("https://localhost:7007/api/Comments/ReportComment/" + CommentId, null))
     console.log(x);
   }
@@ -94,6 +95,13 @@ export class PostService {
   async downvote(commentId: number) {
     let x = await lastValueFrom(this.http.put<any>("https://localhost:7007/api/Comments/DownvoteComment/" + commentId, null));
     console.log(x);
+  }
+
+  // Obtenir une liste de commentaires reported en triant par nouveauté / popularité
+  async getReportedComments(): Promise<Comment[]> {
+    let x = await lastValueFrom(this.http.get<Comment[]>("https://localhost:7007/api/Comments/GetReportedComments"));
+    console.log(x);
+    return x;
   }
 
 }

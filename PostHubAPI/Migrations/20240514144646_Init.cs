@@ -179,7 +179,8 @@ namespace PostHubAPI.Migrations
                     Date = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ParentCommentId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    IsReported = table.Column<bool>(type: "bit", nullable: false)
+                    IsReported = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -319,8 +320,8 @@ namespace PostHubAPI.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1", "fef57292-d02e-44e6-a155-32360aae09d9", "admin", "ADMIN" },
-                    { "2", "e169d5c0-c82f-4f01-b32b-e614f675521f", "moderator", "MODERATOR" }
+                    { "1", "7d0d855e-ac19-4ad1-a4e2-39ed1af7421b", "admin", "ADMIN" },
+                    { "2", "2c7f4a19-6332-4db3-bc01-4eab72c94385", "moderator", "MODERATOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -328,8 +329,8 @@ namespace PostHubAPI.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FileName", "LockoutEnabled", "LockoutEnd", "MimeType", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "11111111-1111-1111-1111-111111111111", 0, "3cc590f0-fff6-42a7-ad86-dbbdcb30862c", "a@a.a", false, null, false, null, null, "A@A.A", "ADMIN", "AQAAAAEAACcQAAAAED9TYYmQzQtJXNcGPwtpfNAUnBZl83yJyz9gSB/wJYjxFNf0SibnBsVsFSqxPXIhLw==", null, false, "abc97f6f-fc6c-4142-9d4b-26d647ca4a7d", false, "admin" },
-                    { "11111111-1111-1111-1111-111111111112", 0, "5e943702-ddb0-44e8-8fad-df726f6f206e", "m@m.m", false, null, false, null, null, "M@M.M", "MODERATOR", "AQAAAAEAACcQAAAAEI689q7brAe29LAi793bGsvyix2WheWTorGo7ryS9ccAQnOQ4SYQEoFINMPxmVzbAg==", null, false, "89d90865-7353-4614-bddf-834a368462f5", false, "moderator" }
+                    { "11111111-1111-1111-1111-111111111111", 0, "d4f93745-d1a2-4d19-aa38-70c74cd54956", "a@a.a", false, null, false, null, null, "A@A.A", "ADMIN", "AQAAAAEAACcQAAAAEPW3WKS57fzidvJYAdbm4igM6QEf5j284/D0qMLmQsaGeMZ/XimZJnKqZ4m3rbqXlw==", null, false, "a4182a70-1916-45d4-9da3-95dd129af393", false, "admin" },
+                    { "11111111-1111-1111-1111-111111111112", 0, "96364c60-c175-4ae9-94e0-53df468da719", "m@m.m", false, null, false, null, null, "M@M.M", "MODERATOR", "AQAAAAEAACcQAAAAEB6l2GyFGuxacKfBY0/siVm3v60J1emG4iywldRgpyzzyDtK3N/tIhEy0KC+9PJGDw==", null, false, "5c136c1e-f69d-4e7f-a821-09c49045d790", false, "moderator" }
                 });
 
             migrationBuilder.InsertData(

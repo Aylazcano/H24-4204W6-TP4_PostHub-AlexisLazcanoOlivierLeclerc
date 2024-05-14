@@ -12,7 +12,7 @@ using PostHubAPI.Data;
 namespace PostHubAPI.Migrations
 {
     [DbContext(typeof(PostHubAPIContext))]
-    [Migration("20240514004928_Init")]
+    [Migration("20240514144646_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,14 +99,14 @@ namespace PostHubAPI.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "fef57292-d02e-44e6-a155-32360aae09d9",
+                            ConcurrencyStamp = "7d0d855e-ac19-4ad1-a4e2-39ed1af7421b",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "e169d5c0-c82f-4f01-b32b-e614f675521f",
+                            ConcurrencyStamp = "2c7f4a19-6332-4db3-bc01-4eab72c94385",
                             Name = "moderator",
                             NormalizedName = "MODERATOR"
                         });
@@ -240,6 +240,9 @@ namespace PostHubAPI.Migrations
 
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsReported")
                         .HasColumnType("bit");
@@ -409,15 +412,15 @@ namespace PostHubAPI.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3cc590f0-fff6-42a7-ad86-dbbdcb30862c",
+                            ConcurrencyStamp = "d4f93745-d1a2-4d19-aa38-70c74cd54956",
                             Email = "a@a.a",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "A@A.A",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAED9TYYmQzQtJXNcGPwtpfNAUnBZl83yJyz9gSB/wJYjxFNf0SibnBsVsFSqxPXIhLw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPW3WKS57fzidvJYAdbm4igM6QEf5j284/D0qMLmQsaGeMZ/XimZJnKqZ4m3rbqXlw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "abc97f6f-fc6c-4142-9d4b-26d647ca4a7d",
+                            SecurityStamp = "a4182a70-1916-45d4-9da3-95dd129af393",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -425,15 +428,15 @@ namespace PostHubAPI.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111112",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5e943702-ddb0-44e8-8fad-df726f6f206e",
+                            ConcurrencyStamp = "96364c60-c175-4ae9-94e0-53df468da719",
                             Email = "m@m.m",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "M@M.M",
                             NormalizedUserName = "MODERATOR",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI689q7brAe29LAi793bGsvyix2WheWTorGo7ryS9ccAQnOQ4SYQEoFINMPxmVzbAg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB6l2GyFGuxacKfBY0/siVm3v60J1emG4iywldRgpyzzyDtK3N/tIhEy0KC+9PJGDw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "89d90865-7353-4614-bddf-834a368462f5",
+                            SecurityStamp = "5c136c1e-f69d-4e7f-a821-09c49045d790",
                             TwoFactorEnabled = false,
                             UserName = "moderator"
                         });
