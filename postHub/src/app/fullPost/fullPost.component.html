@@ -15,7 +15,7 @@
       <div *ngIf="editMenu">
         <div *ngIf="isAuthor" (click)="toggleMainCommentEdit = true">Modifier</div>
         <div *ngIf="isAuthor" (click)="deleteComment()">Supprimer</div>
-        <div *ngIf="!isAuthor">Signaler</div>
+        <div *ngIf="!isAuthor" (click)="reportComment()">Signaler</div>
       </div>
     </div>
   </div>
@@ -31,21 +31,61 @@
     <textarea id="commentTextEdit" *ngIf="toggleMainCommentEdit" type="text" [(ngModel)]="newMainCommentText"></textarea>
     <div class="commentPictures">
       <!-- Des images pourraient être affichées ici -->
+      <div style="width: 100%;" *ngIf="picIdList.length > 4; else elseBlock">
+        <div class="glide">
+          <div class="glide__track" data-glide-el="track">
+            <ul class="glide__slides">
+              <li class="glide__slide" style="height: 200px;" *ngFor="let picId of picIdList" #glideitems>
+                <div class="pictureFrame">
+                  <button class="pictureDelete" *ngIf="isAuthor" (click)="deleteCommentPicture(picId)">X</button>
+                  <a [href]="'https://localhost:7007/api/Comments/GetCommentPicture/lg/' + picId" target="_blank">
+                    <img alt="picId" [src]="'https://localhost:7007/api/Comments/GetCommentPicture/sm/' + picId" style="object-fit: cover;width: 100%; height: 100%;">
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!-- Les flèches pour le déplacement -->
+          <div class="glide__arrows" data-glide-el="controls">
+            <div class="arrow glide__arrow glide__arrow--left" data-glide-dir="<">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="align-self: center;">
+                <path d="M0 12l10.975 11 2.848-2.828-6.176-6.176H24v-3.992H7.646l6.176-6.176L10.975 1 0 12z"></path>
+              </svg>
+            </div>
+            <div class="arrow glide__arrow glide__arrow--right" data-glide-dir=">">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="align-self: center;">
+                <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- elseBlock pour quand il y a 4 ou moins d'images-->
+      <ng-template #elseBlock>
+        <div class="pictureFrame" *ngFor="let picId of picIdList" alt="picId">
+          <button class="pictureDelete" *ngIf="isAuthor" (click)="deleteCommentPicture(picId)">X</button>
+          <a [href]="'https://localhost:7007/api/Comments/GetCommentPicture/lg/' + picId" target="_blank">
+            <img alt="picId" [src]="'https://localhost:7007/api/Comments/GetCommentPicture/sm/' + picId" style="object-fit: cover;width: 100%; height: 100%;">
+          </a>
+        </div>
+      </ng-template>
     </div>
   </div>
 
   <!-- Boutons pour voter / modifier le commentaire principal du post -->
   <div class="postFooter">
     <div class="score">
-      <button [class]="post.mainComment!.upvoted ? 'upvoted' : ''" (click)="upvote()"><fa-icon [icon]="faUpLong"></fa-icon></button>
+      <button [class]="post.mainComment!.upvoted ? 'upvoted' : ''" (click)="upvote()"><fa-icon
+          [icon]="faUpLong"></fa-icon></button>
       <div>{{post.mainComment!.upvotes - post.mainComment!.downvotes}}</div>
-      <button [class]="post.mainComment!.downvoted ? 'downvoted' : ''" (click)="downvote()"><fa-icon [icon]="faDownLong"></fa-icon></button>
+      <button [class]="post.mainComment!.downvoted ? 'downvoted' : ''" (click)="downvote()"><fa-icon
+          [icon]="faDownLong"></fa-icon></button>
     </div>
     <div>
       <button><fa-icon [icon]="faMessage"></fa-icon> {{post.mainComment!.subCommentTotal}}</button>
     </div>
     <div>
-      <input *ngIf="toggleMainCommentEdit" type="file" accept="images/*" name="mainCommentPictures">
+      <input #EditPicViewChild *ngIf="toggleMainCommentEdit" type="file" accept="images/*" name="mainCommentPictures" multiple>
     </div>
     <div>
       <button *ngIf="toggleMainCommentEdit" (click)="toggleMainCommentEdit = false">Annuler</button>
@@ -56,7 +96,7 @@
   </div>
 
   <!-- Trier les commentaires du post par nouveauté / votes -->
-  <div id="sortOptions">Trier par : 
+  <div id="sortOptions">Trier par :
     <select name="commentSort" id="commentSort" [(ngModel)]="sorting" (change)="toggleSorting()">
       <option value="popular">Populaire</option>
       <option value="new">Nouveau</option>
@@ -67,7 +107,7 @@
   <div id="commentBox">
     <input type="text" name="newComment" id="newComment" placeholder="Ajouter un commentaire" [(ngModel)]="newComment">
     <div *ngIf="displayInputFile" class="commentPictureAdd">
-      <input type="file" accept="images/*" name="commentPictures">
+      <input #PicViewChild type="file" accept="images/*" name="commentPictures" multiple>
     </div>
     <button (click)="displayInputFile = !displayInputFile"><fa-icon [icon]="faImage"></fa-icon></button>
     <button (click)="createComment()">Ajouter</button>
@@ -75,7 +115,7 @@
 
   <!-- Liste de commentaires -->
   <div class="comment" *ngFor="let c of post.mainComment!.subComments">
-    <app-comment [comment]="c" ></app-comment>
+    <app-comment [comment]="c"></app-comment>
   </div>
 
 </div>

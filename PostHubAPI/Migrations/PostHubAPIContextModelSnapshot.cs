@@ -92,6 +92,22 @@ namespace PostHubAPI.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            ConcurrencyStamp = "7d0d855e-ac19-4ad1-a4e2-39ed1af7421b",
+                            Name = "admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            ConcurrencyStamp = "2c7f4a19-6332-4db3-bc01-4eab72c94385",
+                            Name = "moderator",
+                            NormalizedName = "MODERATOR"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -179,6 +195,18 @@ namespace PostHubAPI.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "11111111-1111-1111-1111-111111111111",
+                            RoleId = "1"
+                        },
+                        new
+                        {
+                            UserId = "11111111-1111-1111-1111-111111111112",
+                            RoleId = "2"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -210,6 +238,12 @@ namespace PostHubAPI.Migrations
 
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsReported")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("ParentCommentId")
                         .HasColumnType("int");
@@ -255,6 +289,9 @@ namespace PostHubAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -264,6 +301,8 @@ namespace PostHubAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
 
                     b.ToTable("Pictures");
                 });
@@ -365,6 +404,40 @@ namespace PostHubAPI.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "11111111-1111-1111-1111-111111111111",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "d4f93745-d1a2-4d19-aa38-70c74cd54956",
+                            Email = "a@a.a",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "A@A.A",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPW3WKS57fzidvJYAdbm4igM6QEf5j284/D0qMLmQsaGeMZ/XimZJnKqZ4m3rbqXlw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "a4182a70-1916-45d4-9da3-95dd129af393",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = "11111111-1111-1111-1111-111111111112",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "96364c60-c175-4ae9-94e0-53df468da719",
+                            Email = "m@m.m",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "M@M.M",
+                            NormalizedUserName = "MODERATOR",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB6l2GyFGuxacKfBY0/siVm3v60J1emG4iywldRgpyzzyDtK3N/tIhEy0KC+9PJGDw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5c136c1e-f69d-4e7f-a821-09c49045d790",
+                            TwoFactorEnabled = false,
+                            UserName = "moderator"
+                        });
                 });
 
             modelBuilder.Entity("CommentUser", b =>
@@ -478,6 +551,15 @@ namespace PostHubAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("PostHubAPI.Models.Picture", b =>
+                {
+                    b.HasOne("PostHubAPI.Models.Comment", "Comment")
+                        .WithMany("Pictures")
+                        .HasForeignKey("CommentId");
+
+                    b.Navigation("Comment");
+                });
+
             modelBuilder.Entity("PostHubAPI.Models.Post", b =>
                 {
                     b.HasOne("PostHubAPI.Models.Hub", "Hub")
@@ -498,6 +580,8 @@ namespace PostHubAPI.Migrations
             modelBuilder.Entity("PostHubAPI.Models.Comment", b =>
                 {
                     b.Navigation("MainCommentOf");
+
+                    b.Navigation("Pictures");
 
                     b.Navigation("SubComments");
                 });

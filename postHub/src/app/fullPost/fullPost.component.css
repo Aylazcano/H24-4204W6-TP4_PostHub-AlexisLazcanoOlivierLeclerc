@@ -213,3 +213,12 @@
     width:20px;
     cursor:pointer;
 }
+
+.arrow{
+    background: gray;
+    border-radius: 25px;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    border: none;
+}

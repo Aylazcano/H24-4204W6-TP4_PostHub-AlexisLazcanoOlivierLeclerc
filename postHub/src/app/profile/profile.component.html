@@ -5,12 +5,41 @@
 <div *ngIf="userIsConnected">
   <div id="profileTitle">Votre profil</div>
 
+    <!-- Le formulaire pour changer l'avatar -->
+  <div class="profile">
+
+    <div>Modifier l'avatar</div>
+    <img id="avatarImage" class="avatar" [src]="'https://localhost:7007/api/Users/GetUserAvatar/' + username" alt="Avatar">
+    <input #AvatarViewChild type="file" name="newAvatar" accept="images/*">
+    <button class="send" type="submit" (click)="changeAvatar()">Modifier</button>
+
+  </div>
+
   <!-- Le formulaire pour changer le mot de passe vous est déjà fourni -->
   <div class="profile">
+
     <div>Modifier le mot de passe</div>
-    <input type="password" name="oldPassword" id="oldPassword" placeholder="Mot de passe actuel" [(ngModel)]="oldPassword">
-    <input type="password" name="newPassword" id="newPassword" placeholder="Nouveau mot de passe" [(ngModel)]="newPassword">
-    <input type="password" name="newPasswordConfirm" id="newPasswordConfirm" placeholder="Confirmer le nouveau mot de passe" [(ngModel)]="newPasswordConfirm">
-    <button>Modifier</button>
+    <input type="password" name="oldPassword" id="oldPassword" placeholder="Mot de passe actuel"
+      [(ngModel)]="oldPassword">
+    <input type="password" name="newPassword" id="newPassword" placeholder="Nouveau mot de passe"
+      [(ngModel)]="newPassword">
+    <input type="password" name="newPasswordConfirm" id="newPasswordConfirm"
+      placeholder="Confirmer le nouveau mot de passe" [(ngModel)]="newPasswordConfirm">
+    <button type="submit" (click)="changePassword()">Modifier</button>
+  </div>
+
+  <!-- Le formulaire pour ajouter un moderator -->
+  <div class="profile" *ngIf="isAdmin">
+    <div>Ajouter un modérateur</div>
+    <input type="text" name="newModerator" id="newModerator" placeholder="Nom d'utilisateur"
+      [(ngModel)]="newModerator">
+    <button type="submit" (click)="makeUserModerator()">Ajouter</button>
+  </div>
+
+  <!-- Bouton redirigeant vers la liste des commentaires signalés -->
+  <div class="profile" *ngIf="isModerator">
+    <div>Voir la liste de commentaires signalés</div>
+    <button type="button" [routerLink]="['/reports']">Voir les commentaires signalés</button>
   </div>
 </div>
+

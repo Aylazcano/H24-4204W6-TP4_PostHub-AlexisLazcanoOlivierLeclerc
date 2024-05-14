@@ -1,4 +1,4 @@
-﻿namespace PostHubAPI.Models.DTOs
+namespace PostHubAPI.Models.DTOs
 {
     public class CommentDisplayDTO
     {
@@ -12,7 +12,7 @@
         public bool Downvoted { get; set; }
         public int SubCommentTotal { get; set; }
         public List<CommentDisplayDTO>? SubComments { get; set; }
-
+        public List<int>? PictureIds { get; set; }
         public CommentDisplayDTO() { }
         public CommentDisplayDTO(Comment comment, bool withSubComments, User? user)
         {
@@ -29,6 +29,7 @@
             Downvoted = user != null && (comment.Downvoters?.Contains(user) ?? false);
             SubCommentTotal = comment.GetSubCommentTotal();
             SubComments = subComments;
+            PictureIds = comment.Pictures?.Select(x => x.Id).ToList();
         }
     }
 }
