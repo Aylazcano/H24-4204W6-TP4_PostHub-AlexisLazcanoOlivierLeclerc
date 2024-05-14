@@ -160,7 +160,11 @@ export class FullPostComponent implements OnInit {
     else{
       this.picIdList = this.picIdList.filter(id => id !== pictureId);
     }
+  }
 
+  async reportComment(){
+    if (this.post == null || this.post.mainComment == null) return;
+    await this.postService.reportComment(this.post.mainComment.id);
   }
 
   ngAfterViewInit() {

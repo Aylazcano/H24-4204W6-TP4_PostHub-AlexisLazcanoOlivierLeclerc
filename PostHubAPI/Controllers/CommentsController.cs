@@ -106,18 +106,6 @@ namespace PostHubAPI.Controllers
             return Ok(new CommentDisplayDTO(newComment, false, user));
         }
 
-        [HttpGet("{pictureId}")]
-        [AllowAnonymous]
-        public async Task<ActionResult> GetCommentPicture(int pictureId)
-        {
-            Picture? picture = await _pictureService.GetPicture(pictureId);
-            if(picture == null || picture.FileName == null || picture.MimeType == null) return NotFound();
-
-            byte[] bytes = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/post/" + picture.FileName);
-
-            return File(bytes, picture.MimeType);
-        }
-
         [HttpGet("{tabName}/{sorting}")]
         public async Task<ActionResult<IEnumerable<PostDisplayDTO>>> GetPosts(string tabName, string sorting)
         {
@@ -205,6 +193,26 @@ namespace PostHubAPI.Controllers
                 postDisplayDTO.MainComment.SubComments = postDisplayDTO.MainComment!.SubComments!.OrderByDescending(c => c.Date).ToList();
 
             return Ok(postDisplayDTO);
+        }
+
+        //TODO: GetReportedComments
+
+        [HttpGet("{size}/{pictureId}")]
+        [AllowAnonymous]
+        public async Task<ActionResult> GetCommentPicture(string size, int pictureId)
+        {
+            Picture? picture = await _pictureService.GetPicture(pictureId);
+            if (picture == null || picture.FileName == null || picture.MimeType == null)
+            {
+                return NotFound(new { Message = "Cette image n'existe pas." });
+            }
+            if (!(Regex.Match(size, "lg|sm").Success))
+            {
+                return BadRequest(new { Message = "La taille de l'image doit être 'lg' ou 'sm'." });
+            }
+
+            byte[] bytes = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/" + size + "/" + picture.FileName);
+            return File(bytes, picture.MimeType);
         }
 
         [HttpPut("{commentId}")]
@@ -330,6 +338,16 @@ namespace PostHubAPI.Controllers
             return Ok(new { Message = "Commentaire supprimé." });
         }
 
+        [HttpPut("{commentId}")]
+        [Authorize]
+        public async Task<ActionResult> ReportComment(int commentId)
+        {
+            bool reportSuccess = await _commentService.ReportComment(commentId);
+            if (!reportSuccess) return StatusCode(StatusCodes.Status500InternalServerError);
+
+            return Ok(new { Message = "Commentaire signalé." });
+        }
+        
         private static IEnumerable<Post> GetPopularPosts(Hub hub, int qty)
         {
             return hub.Posts!.OrderByDescending(p => p.MainComment?.Upvoters?.Count - p.MainComment?.Downvoters?.Count).Take(qty);
@@ -340,22 +358,5 @@ namespace PostHubAPI.Controllers
             return hub.Posts!.OrderByDescending(p => p.MainComment?.Date).Take(qty);
         }
 
-        [HttpGet("{size}/{pictureId}")]
-        [AllowAnonymous]
-        public async Task<ActionResult> GetCommentPicture(string size, int pictureId)
-        {
-            Picture? picture = await _pictureService.GetPicture(pictureId);
-            if (picture == null || picture.FileName == null || picture.MimeType == null)
-            {
-                return NotFound(new { Message = "Cette image n'existe pas." });
-            }
-            if (!(Regex.Match(size, "lg|sm").Success))
-            {
-                return BadRequest(new { Message = "La taille de l'image doit être 'lg' ou 'sm'." });
-            }
-
-            byte[] bytes = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/" + size + "/" + picture.FileName);
-            return File(bytes, picture.MimeType);
-        }
     }
 }
