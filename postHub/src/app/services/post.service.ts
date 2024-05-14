@@ -79,6 +79,11 @@ export class PostService {
 
   }
 
+  async reportComment(CommentId:number):Promise<void>{
+    let x = await lastValueFrom(this.http.put<any>("https://localhost:7007/api/Comments/ReportComment/" + CommentId, null))
+    console.log(x);
+  }
+
   // Upvote un commentaire (que ce soit le commentaire principal d'un post ou un sous-commentaire)
   async upvote(commentId: number) {
     let x = await lastValueFrom(this.http.put<any>("https://localhost:7007/api/Comments/UpvoteComment/" + commentId, null));

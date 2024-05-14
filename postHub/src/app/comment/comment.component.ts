@@ -127,9 +127,13 @@ export class CommentComponent implements OnInit {
 
   async deleteCommentPicture(pictureId : number){
     if (this.picIdToDelete == null) return;
-    
     await this.postService.deleteCommentPicture(pictureId)
     this.picIdList = this.picIdList?.filter(id => id !== pictureId);
+  }
+
+  async reportComment(){
+    if (this.comment == null) return;
+    await this.postService.reportComment(this.comment.id);
   }
 
   // Upvoter (notez que ça annule aussi tout downvote fait pas soi-même)

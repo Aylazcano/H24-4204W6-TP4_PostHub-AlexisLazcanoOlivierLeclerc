@@ -97,14 +97,14 @@ namespace PostHubAPI.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "aecdbfd1-4a99-4490-a5b8-eeb78dad4f37",
+                            ConcurrencyStamp = "fef57292-d02e-44e6-a155-32360aae09d9",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "aa86de6f-e5b7-4799-bdd7-d59129b30283",
+                            ConcurrencyStamp = "e169d5c0-c82f-4f01-b32b-e614f675521f",
                             Name = "moderator",
                             NormalizedName = "MODERATOR"
                         });
@@ -238,6 +238,9 @@ namespace PostHubAPI.Migrations
 
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsReported")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("ParentCommentId")
                         .HasColumnType("int");
@@ -404,15 +407,15 @@ namespace PostHubAPI.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "262e2a19-b230-4254-b6b9-c907dfdfb3fd",
+                            ConcurrencyStamp = "3cc590f0-fff6-42a7-ad86-dbbdcb30862c",
                             Email = "a@a.a",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "A@A.A",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAELDxHodhFuQGiTuFkvDcVOtSgXfbcYCpUZwMtoEZ7dnwNQplklfUrgCTEG/Pw1ytSA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAED9TYYmQzQtJXNcGPwtpfNAUnBZl83yJyz9gSB/wJYjxFNf0SibnBsVsFSqxPXIhLw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f4b57f9c-39a4-405f-b58e-578014760934",
+                            SecurityStamp = "abc97f6f-fc6c-4142-9d4b-26d647ca4a7d",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -420,15 +423,15 @@ namespace PostHubAPI.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111112",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fe1e1de8-3107-4c43-8eb0-5f7323a7f5eb",
+                            ConcurrencyStamp = "5e943702-ddb0-44e8-8fad-df726f6f206e",
                             Email = "m@m.m",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "M@M.M",
                             NormalizedUserName = "MODERATOR",
-                            PasswordHash = "AQAAAAEAACcQAAAAECRyO6HzhLCImHyzpVHQxIKWbWlm2YmQGv5aGJ4lXiL/K9LZwhNx6QGsl5QK0DJXzQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEI689q7brAe29LAi793bGsvyix2WheWTorGo7ryS9ccAQnOQ4SYQEoFINMPxmVzbAg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4fb76c9b-953c-42c6-8b94-29832850e289",
+                            SecurityStamp = "89d90865-7353-4614-bddf-834a368462f5",
                             TwoFactorEnabled = false,
                             UserName = "moderator"
                         });
