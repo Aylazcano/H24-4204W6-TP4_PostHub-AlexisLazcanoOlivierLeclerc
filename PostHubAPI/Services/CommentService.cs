@@ -67,6 +67,7 @@ namespace PostHubAPI.Services
             }
             deletedComment.Upvoters = new List<User>();
             deletedComment.Downvoters = new List<User>();
+            deletedComment.IsDeleted = true;
             await _context.SaveChangesAsync();
             return deletedComment;
         }
@@ -140,6 +141,13 @@ namespace PostHubAPI.Services
             await _context.SaveChangesAsync();
 
             return true; // Signalement réussi
+        }
+
+        public async Task<Comment[]?> GetReportedComments()
+        {
+            if (IsContextNull()) return null;
+
+            return await _context.Comments.Where(c => c.IsReported && !c.IsDeleted).ToArrayAsync();
         }
 
         private bool IsContextNull() => _context.Comments == null;

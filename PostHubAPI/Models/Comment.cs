@@ -26,8 +26,8 @@ namespace PostHubAPI.Models
         [InverseProperty("Downvotes")]
         public virtual List<User>? Downvoters { get; set; } = new List<User>();
         public virtual List<Picture>? Pictures { get; set; } = new List<Picture>();
-
         public virtual bool IsReported { get; set; } = false;
+        public virtual bool IsDeleted { get; set; } = false;
 
         public int GetSubCommentTotal()
         {

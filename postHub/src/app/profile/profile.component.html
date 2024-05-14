@@ -5,6 +5,7 @@
 <div *ngIf="userIsConnected">
   <div id="profileTitle">Votre profil</div>
 
+    <!-- Le formulaire pour changer l'avatar -->
   <div class="profile">
 
     <div>Modifier l'avatar</div>
@@ -34,4 +35,11 @@
       [(ngModel)]="newModerator">
     <button type="submit" (click)="makeUserModerator()">Ajouter</button>
   </div>
+
+  <!-- Bouton redirigeant vers la liste des commentaires signalés -->
+  <div class="profile" *ngIf="isModerator">
+    <div>Voir la liste de commentaires signalés</div>
+    <button type="button" [routerLink]="['/reports']">Voir les commentaires signalés</button>
+  </div>
 </div>
+

@@ -19,6 +19,7 @@ export class ProfileComponent implements OnInit {
 
   username: string | null = null;
   isAdmin: boolean = false;
+  isModerator: boolean = false;
 
   @ViewChild("AvatarViewChild", { static: false }) avatarInput?: ElementRef;
   avatarImage: any;
@@ -31,6 +32,9 @@ export class ProfileComponent implements OnInit {
     let roles = localStorage.getItem("roles");
     if(roles?.includes("admin")){
       this.isAdmin = true;
+    }
+    if(roles?.includes("moderator")){
+      this.isModerator = true;
     }
   }
 
